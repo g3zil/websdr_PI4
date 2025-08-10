@@ -1,21 +1,16 @@
 #!/bin/bash
-### This bash script with python parts to detect (sic - not decode, yet)and upload PI4 data from Margate 24 GHz SDR to a table in tutorial database on WD1
-### Basic functional prototype based on jt4 original by Gwyn G3ZIL Oct-Nov 2024
-### V1.0 for Raspberry Pi for G4BAO evaluation
+### This bash script with python parts detects (sic - no decode, yet)and uploads PI4 data from Margate 24 GHz SDR
+### to a table in tutorial database on WD1
+### Basic functional prototype based on jt4 original by Gwyn G3ZIL Oct 2024 - August 2025
+### V1.1 for Ubuntu 24.04 and Raspberry Pi Bookworm
 
 ########################################################
 # Only user-set installation variables are in this block
 ########################################################
 # set up receiver details to go into database table via python
-TX_CALL=PA3GCO          # PA3GCO dial frequency 24048.9320 to put carrier at 800 Hz and Tone0 at 682.8125 Hz
-#TX_CALL=GB3PKT         # for program testing of logic, not detection
-TX_GRID=JO21EU          # The tx details are needed here as we are detect only, and the SDR will be set to this beacon's frequency
-#TX_GRID=JO01MT         #
-BAND=3.0
-FREQUENCY=10368.9292    # dial for PA3GCO on 10 GHz PI4
-#FREQUENCY=24048.944      # dial for GB3PKT as above
-#RX_ID=TRIG01/G3ZIL      # The /G3ZIL is a suggested addition, use your callsign to show who is using it
-#RX_GRID=JO01qj
+RX_GRID=JO01qj           #  Maidenhead for Margate WebSDR, not where browser is located!
+RX_ID=TRIG01/G3ZIL       # The /G3ZIL is a suggested addition, use your callsign to show who is using WebSDR
+# alternate receiver that may hear the PI4 beacon
 RX_ID=SHBRG/G3ZIL      # This is SDR at http://sdr.shbrg.nl:8074/ The /G3ZIL is a suggested addition, use your callsign to show who is using it
 RX_GRID=JO21PR
 ########################################################
