@@ -13,6 +13,7 @@ from scipy import signal        # For the  Continuous Wavelet Transform (CWT)
 import sys
 import csv
 import subprocess
+from subprocess import PIPE, run
 
 ##########################################################################
 # Functions
