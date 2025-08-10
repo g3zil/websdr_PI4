@@ -11,8 +11,8 @@
 RX_GRID=JO01qj           #  Maidenhead for Margate WebSDR, not where browser is located!
 RX_ID=TRIG01/G3ZIL       # The /G3ZIL is a suggested addition, use your callsign to show who is using WebSDR
 # alternate receiver that may hear the PI4 beacon
-RX_ID=SHBRG/G3ZIL      # This is SDR at http://sdr.shbrg.nl:8074/ The /G3ZIL is a suggested addition, use your callsign to show who is using it
-RX_GRID=JO21PR
+# RX_ID=SHBRG/G3ZIL      # This is SDR at http://sdr.shbrg.nl:8074/ The /G3ZIL is a suggested addition, use your callsign to show who is using it
+# RX_GRID=JO21PR
 ########################################################
 # set up base directory and where wav file from WSJT-X JT4 mode selected will reside
 BASE_DIR=$(pwd)
@@ -28,7 +28,8 @@ WAV_FILE_TIME=$(ls -ltr ${BASE_DIR}/save| tail -n 1 | awk '{print substr($9, 8,4
 LAST_MINUTE=$(date -u -v-1M +%Y-%m-%dT%H:%M:00Z)
 echo "File time ${WAV_FILE_TIME}  last minute time ${LAST_MINUTE}"
 
-if [[ ${WAV_FILE_TIME} = ${LAST_MINUTE} ]]
+# if [[ ${WAV_FILE_TIME} = ${LAST_MINUTE} ]]
+if [[ ${WAV_FILE_TIME} != ${LAST_MINUTE} ]]
 then
     echo 'New data file - so detect PI4 and estimate noise'
     echo "Detection program processing file "${WAV_FILE}
@@ -47,6 +48,6 @@ else
 fi
 
 # Tidy up wav files, keep just last 10
-rm -v -f $(ls -1t ${BASE_DIR}/save/*.wav | tail -n +11)
+# rm -v -f $(ls -1t ${BASE_DIR}/save/*.wav | tail -n +11)
 
 echo "Processing complete"
