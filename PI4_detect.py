@@ -59,6 +59,10 @@ def bubble_sort(freq_peaks,level_peaks):
 def remove_adjacent(L):      # This function removes instances where a single peak has adjacent frequencies
   return [elem for i, elem in enumerate(L) if i == 0 or L[i-1]+1 != elem]
 
+def out(command):
+    result = run(command, stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
+    return result.stdout
+	
 ############################################################################
 
 ###########
