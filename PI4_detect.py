@@ -68,9 +68,11 @@ def remove_adjacent(L):      # This function removes instances where a single pe
 date_time=sys.argv[1] 	         	    # date and time passed in command line
 wav_file=sys.argv[2] 	         	    # wav file name passed in command line
 
-BASE_DIR='/users/gxg/desktop/PI4'
+BASE_DIR=out("pwd")
+BASE_DIR = BASE_DIR.strip('\n')
+
 DETECTION_FILE=BASE_DIR + '/PI4_detections.csv'
-PLOT_FILE=BASE_DIR + '/PI4_sync_frequency'  # the png gets added in savefig as it needs to know the extension
+PLOT_FILE=BASE_DIR + '/output/plots/filename'  # the png gets added in savefig as it needs to know the extension
 
 freq_peaks=np.empty(4)
 level_peaks=np.empty(4)
