@@ -25,11 +25,11 @@ PI4_WAV_DIR=${BASE_DIR}/save  #  This is where wsjtx puts the wav file. Note we 
 DECODE_CAPTURE_DATE=$(date -u  +%Y-%m-%dT%H:%M:00Z)                   # easier to get time in required format this way
 WAV_FILE=$(ls -ltr ${BASE_DIR}/save| tail -n 1 | awk '{print $9}')    # get the PI4  wav file name to process, every minute
 WAV_FILE_TIME=$(ls -ltr ${BASE_DIR}/save| tail -n 1 | awk '{print substr($9, 8,4)}')
-LAST_MINUTE=$(date -u  +%Y-%m-%dT%H:%M:00Z --date '-1 min')
+LAST_MINUTE=$(date -u  --date '-1 min' +%H%M )
 echo "File time ${WAV_FILE_TIME}  last minute time ${LAST_MINUTE}"
 
-# if [[ ${WAV_FILE_TIME} = ${LAST_MINUTE} ]]
-if [[ ${WAV_FILE_TIME} != ${LAST_MINUTE} ]]
+if [[ ${WAV_FILE_TIME} = ${LAST_MINUTE} ]]
+#if [[ ${WAV_FILE_TIME} != ${LAST_MINUTE} ]]
 then
     echo 'New data file - so detect PI4 and estimate noise'
     echo "Detection program processing file "${WAV_FILE}
@@ -48,6 +48,6 @@ else
 fi
 
 # Tidy up wav files, keep just last 10
-# rm -v -f $(ls -1t ${BASE_DIR}/save/*.wav | tail -n +11)
+ rm -v -f $(ls -1t ${BASE_DIR}/save/*.wav | tail -n +11)
 
 echo "Processing complete"
