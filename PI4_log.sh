@@ -42,7 +42,7 @@ then
     paste -d "," ${BASE_DIR}/noise.csv ${BASE_DIR}/PI4_detections.csv >${BASE_DIR}/temp.csv  # put both csv data sets on one line
 
     awk -F"," -v OFS="," -v tx_call="${TX_CALL}" -v tx_call="${TX_CALL}" -v tx_grid="${TX_GRID}" -v band="${BAND}" -v frequency="${FREQUENCY}" \
-     -v rx_id="${RX_ID}" -v rx_grid="${RX_GRID}" ' {print $1,tx_call,tx_grid,band,frequency,rx_id,rx_grid,$2,$3,$5,$6,$7,$8,$9,$10,$11,$12,$13}' \
+     -v rx_id="${RX_ID}" -v rx_grid="${RX_GRID}" ' {print $1,tx_call,tx_grid,band,frequency,rx_id,rx_grid,$2,$3,$4,$6,$7,$8,$9,$10,$11,$12,$13, $14}' \
      <${BASE_DIR}/temp.csv >${BASE_DIR}/data.csv
     cat ${BASE_DIR}/data.csv
 

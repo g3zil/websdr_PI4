@@ -27,10 +27,8 @@ echo "RMS_NOISE (dB)= ${RMS_NOISE}"
 
 sox ${WAV_DIR}/$1 ${BASE_DIR}/trimmed.wav trim 46 13                                        # trim time interval to the carrier interval 46 to 19 s 
 sox ${BASE_DIR}/trimmed.wav ${BASE_DIR}/filtered.wav sinc 750-850                           # sinc bandpass filter around the carrier
-SIGNAL=$(sox ${BASE_DIR}/filtered.wav -n stats 2>&1 | grep 'RMS lev dB' | awk '{print $4}') # get stats, look for RMS level and grab value
-BAND_NOISE=$(/usr/bin/bc <<< "scale=2; $NOISE + 20")                             # Remove noise scaled to 100 Hz from  dB in 1 Hz to get signal
-RMS_SIGNAL=$(/usr/bin/bc <<< "scale=2; $SIGNAL - $BAND_NOISE")                             # Remove noise scaled to 100 Hz from  dB in 1 Hz to get signal
+SPLUSN=$(sox ${BASE_DIR}/filtered.wav -n stats 2>&1 | grep 'RMS lev dB' | awk '{print $4}') # get stats, look for RMS level and grab value
 
-echo "RMS_SIGNAL (dB)= ${RMS_SIGNAL}"
-# log current time, noise and signal level estimates and mode and save as csv
-echo ${DECODE_CAPTURE_DATE}","${MODE}","${RMS_NOISE}","${RMS_SIGNAL} >${BASE_DIR}"/noise.csv"
+echo "RMS_SIGNAL+NOISE (dB)= ${SPLUSN}"
+# log current time, noise and signal plus noise level estimates and mode and save as csv
+echo ${DECODE_CAPTURE_DATE}","${MODE}","${RMS_NOISE}","${SPLUSN} >${BASE_DIR}"/noise.csv"
