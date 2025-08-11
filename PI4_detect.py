@@ -42,7 +42,8 @@ def freqInterpolate (index, radius, x, level):
 
 # Bubble sort for frequency and correlation at that frequency in CWF peaks list
 def bubble_sort(freq_peaks,level_peaks):
-    # Outer loop to iterate through the list n times
+    print(len(freq_peaks))
+   # Outer loop to iterate through the list n times
     for n in range(len(freq_peaks) - 1, 0, -1):
         # Initialize swapped to track if any swaps occur
         swapped = False
@@ -54,8 +55,18 @@ def bubble_sort(freq_peaks,level_peaks):
                 level_peaks[i], level_peaks[i + 1] = level_peaks[i + 1], level_peaks[i]
                 swapped = True
         # If no swaps occurred, the list is already sorted
+        # Either the index 0 or index 1 values may be spurious below 600 Hz, if so remove
         if not swapped:
-            break
+          break
+    if freq_peaks[0] <600:
+        freq_peaks=np.delete(freq_peaks,0)
+        level_peaks=np.delete(level_peaks,0)
+        print("First deleted, new first: ", freq_peaks[0]) 
+        if freq_peaks[0] <600:      #  the second one can only be below 600 if the first one was
+          freq_peaks=np.delete(freq_peaks,0)
+          level_peaks=np.delete(level_peaks,0)
+          print("second deleted, new first: ", freq_peaks[0])
+    return freq_peaks, level_peaks
 
 def remove_adjacent(L):      # This function removes instances where a single peak has adjacent frequencies
   return [elem for i, elem in enumerate(L) if i == 0 or L[i-1]+1 != elem]
@@ -79,12 +90,14 @@ BASE_DIR = BASE_DIR.strip('\n')
 DETECTION_FILE=BASE_DIR + '/PI4_detections.csv'
 PLOT_FILE=BASE_DIR + '/output/plots/filename'  # the png gets added in savefig as it needs to know the extension
 
-freq_peaks=np.empty(4)
-level_peaks=np.empty(4)
+# Look for six peaks, as well as the wanted four, above 600 Hz if freq correct, 'sidelobes' can appear at lower
+# frequencies and confuse matters, so screen those out 
+freq_peaks=np.empty(6)
+level_peaks=np.empty(6)
 
 ########  Start of code from Daniel's work #######################################
-fs = 12000                                  # Fs is sampling frequency in sps, 11025 for JT4 
-N = 2000                                    # Number of cycles per symbol, so each symbol lasts 0.1667 seconds. 2520 for JT4
+fs = 12000                                     # Fs is sampling frequency in sps, 11025 for JT4 
+N = 2000                                       # Number of cycles per symbol, so each symbol lasts 0.1667 seconds. 2520 for JT4
 
 rate, x = scipy.io.wavfile.read(wav_file)      # read in the wav file where it has been converted to 12000 sps using sox
 print ("Samp rate = ",rate, "x.size ",x.size)  # print as a check, x.size with sox-trimmed 25s file is 25 * fs = 300,000
@@ -95,7 +108,7 @@ baud_rate=5.859375   	          # characteristic for PI4 in Hz
 tone_spacing=baud_rate*f_shift    # we will look for peaks at this spacing
 T0=683                            # PI4 Tone zero frequency (Hz) - but look out for oscillator offset
 				  # due to the imprecise TCXO in the RTL-dongle of WebSDR. This is a practical figure.
-T0_tol=500			  # A tolerance for T0 to give a window for TCXO stability.
+T0_tol=100			  # A tolerance for T0 to give a window for TCXO stability.
 Tn_tol=10                         # A tolerance for freq diff of tones 1,2,3 from T0, which can be tighter than for T0_tol as it is relative not absolute
 
 # PI4 146 bit pseudo random sync vector provided by Klaus DJ5HG
@@ -172,7 +185,7 @@ with open(DETECTION_FILE, "a") as out_file:
  
 # find the index at four successively reducing maxima: algorithm finds first max, finds freq and level at that index, then sets max that index to zero
 # and iterates
-  for i in range(0,4):
+  for i in range(0,6):
     max=np.argmax(correl_zoom[peakind])
     index_max=peakind[max]
     index_max_original=index_max
@@ -194,7 +207,7 @@ with open(DETECTION_FILE, "a") as out_file:
     peakind=np.setdiff1d(peakind,to_remove)
 
 # Some instances where not in frequency order, so have to sort
-  sorted=bubble_sort(freq_peaks,level_peaks)
+  freq_peaks,level_peaks =bubble_sort(freq_peaks,level_peaks)
 
 # Do we have a valid JT4 detection? Yes if T0 frequency  between T0-T0_tol and  T0+T0_tol
 # We will call this a  score 1 detection, score 2 if T1 at +310 to +320 Hz, 3 if T2 +630 to +650 Hz and 4 if T3 +950 to +970 Hz
