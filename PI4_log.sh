@@ -36,12 +36,16 @@ then
     sox ${BASE_DIR}/save/${WAV_FILE} ${BASE_DIR}/trimmed.wav trim 0 25    # The PI4 tones are in first 25 seconds
     sox ${BASE_DIR}/trimmed.wav -r 12000 ${BASE_DIR}/12000.wav            # resample to 12000 sps for PI4
     /usr/bin/python3 ${BASE_DIR}/PI4_detect.py ${DECODE_CAPTURE_DATE} ${BASE_DIR}/12000.wav  > ${BASE_DIR}/PI4_detect.log   # do the processing!
+
     ${BASE_DIR}/sn_calc.sh ${WAV_FILE}                                # script uses SOX to estimate RMS noise
+
     paste -d "," ${BASE_DIR}/noise.csv ${BASE_DIR}/PI4_detections.csv >${BASE_DIR}/temp.csv  # put both csv data sets on one line
+
     awk -F"," -v OFS="," -v tx_call="${TX_CALL}" -v tx_call="${TX_CALL}" -v tx_grid="${TX_GRID}" -v band="${BAND}" -v frequency="${FREQUENCY}" \
      -v rx_id="${RX_ID}" -v rx_grid="${RX_GRID}" ' {print $1,tx_call,tx_grid,band,frequency,rx_id,rx_grid,$2,$3,$5,$6,$7,$8,$9,$10,$11,$12,$13}' \
      <${BASE_DIR}/temp.csv >${BASE_DIR}/data.csv
     cat ${BASE_DIR}/data.csv
+
     /usr/bin/python3 ${BASE_DIR}/PI4_upload.py ${BASE_DIR}/data.csv       # uploads to database with mode ident PI4 together with metadata
 else
   echo "Stale file - possibly WSJT-X not running"

@@ -5,6 +5,7 @@
 # Daniel's code is licensed under the MIT license, which is a permissive open source license#
 # For PI4 details see  https://rudius.net/oz2m/ngnb/pi4.htm and links therein
 # Two command line arguments, the date-time and the wav file that has been subsampled to 12000 ksps
+# Gwyn Griffiths G3ZIL V1.0 December 2024-August 2025
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -55,17 +56,16 @@ def bubble_sort(freq_peaks,level_peaks):
                 level_peaks[i], level_peaks[i + 1] = level_peaks[i + 1], level_peaks[i]
                 swapped = True
         # If no swaps occurred, the list is already sorted
-        # Either the index 0 or index 1 values may be spurious below 600 Hz, if so remove
         if not swapped:
           break
-    if freq_peaks[0] <600:
+    if freq_peaks[0] <600:          # This is where we check for and remove sidelobes from correlation below 600 Hz
         freq_peaks=np.delete(freq_peaks,0)
         level_peaks=np.delete(level_peaks,0)
-        print("First deleted, new first: ", freq_peaks[0]) 
+        print("First deleted, new first: ", f"{freq_peaks[0]:.2f}") 
         if freq_peaks[0] <600:      #  the second one can only be below 600 if the first one was
           freq_peaks=np.delete(freq_peaks,0)
           level_peaks=np.delete(level_peaks,0)
-          print("second deleted, new first: ", freq_peaks[0])
+          print("Second deleted, new first: ", f"{freq_peaks[0]:.2f}")
     return freq_peaks, level_peaks
 
 def remove_adjacent(L):      # This function removes instances where a single peak has adjacent frequencies
@@ -180,7 +180,7 @@ plt.savefig(PLOT_FILE + '.png', dpi=300)
 peaks = signal.find_peaks_cwt(correl_zoom, widths=np.arange(2,4))  # 2,4 is initial empirical selection
 peakind=remove_adjacent(peaks)                                     # in case single peak shown as two adj freqs
 
-with open(DETECTION_FILE, "a") as out_file:
+with open(DETECTION_FILE, "w") as out_file:
   out_writer=csv.writer(out_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
  
 # find the index at four successively reducing maxima: algorithm finds first max, finds freq and level at that index, then sets max that index to zero

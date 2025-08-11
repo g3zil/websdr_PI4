@@ -15,13 +15,22 @@ DECODE_CAPTURE_DATE=$(date -u +%Y-%m-%dT%H:%M:00Z --date '-1 min')
 
 # The noise level part. This is dB on arbitary scale dependent on WebSDR/Browser/WSJT-X signal level - unsatisfactory I know, but this is pilot!
 # Use of sox and RMS in trough of 50 milliseconds is well documented in Griffiths et al. in QEX for WSPR
-#/usr/local/bin/sox ${WAV_DIR}/$1 -n stat
+
 sox ${WAV_DIR}/$1 ${BASE_DIR}/trimmed.wav trim 40 5                                         # trim time interval to 40 to 40+5 seconds 
 sox ${BASE_DIR}/trimmed.wav ${BASE_DIR}/filtered.wav sinc 1200-2000                         # sinc bandpass filter away from carrier 
 NOISE=$(sox ${BASE_DIR}/filtered.wav -n stats 2>&1 | grep 'RMS Tr dB' | awk '{print $4}')   # get stats, look for trough value quietest 50 ms and grab value
-RMS_NOISE=$(/usr/bin/bc <<< "scale=2; $NOISE - 29")    # account for the 800 Hz bandwidth for noise measurement to get dB in 1 Hz
+RMS_NOISE=$(/usr/bin/bc <<< "scale=2; $NOISE - 29")                                         # account for 800 Hz noise measurement bw to get dB in 1 Hz
 
 echo "RMS_NOISE (dB)= ${RMS_NOISE}"
 
-# log current time, noise estimate and mode and save as csv
-echo ${DECODE_CAPTURE_DATE}","${MODE}","${RMS_NOISE} >${BASE_DIR}"/noise.csv"
+# The signal+noise level part. This is dB on arbitary scale dependent on WebSDR/Browser/WSJT-X signal level - unsatisfactory I know, but this is pilot!
+
+sox ${WAV_DIR}/$1 ${BASE_DIR}/trimmed.wav trim 46 13                                        # trim time interval to the carrier interval 46 to 19 s 
+sox ${BASE_DIR}/trimmed.wav ${BASE_DIR}/filtered.wav sinc 750-850                           # sinc bandpass filter around the carrier
+SIGNAL=$(sox ${BASE_DIR}/filtered.wav -n stats 2>&1 | grep 'RMS lev dB' | awk '{print $4}') # get stats, look for RMS level and grab value
+BAND_NOISE=$(/usr/bin/bc <<< "scale=2; $NOISE + 20")                             # Remove noise scaled to 100 Hz from  dB in 1 Hz to get signal
+RMS_SIGNAL=$(/usr/bin/bc <<< "scale=2; $SIGNAL - $BAND_NOISE")                             # Remove noise scaled to 100 Hz from  dB in 1 Hz to get signal
+
+echo "RMS_SIGNAL (dB)= ${RMS_SIGNAL}"
+# log current time, noise and signal level estimates and mode and save as csv
+echo ${DECODE_CAPTURE_DATE}","${MODE}","${RMS_NOISE}","${RMS_SIGNAL} >${BASE_DIR}"/noise.csv"
