@@ -7,12 +7,18 @@
 ########################################################
 # Only user-set installation variables are in this block
 ########################################################
-# set up receiver details to go into database table via python
-RX_GRID=JO01qj           #  Maidenhead for Margate WebSDR, not where browser is located!
-RX_ID=TRIG01/G3ZIL       # The /G3ZIL is a suggested addition, use your callsign to show who is using WebSDR
+# set up receiver and transmitter details to go into database table via python
+# unlike for jt4 we do not get some of these from WSJT-X ALL.TXT file
+#RX_GRID=JO01qj           #  Maidenhead for Margate WebSDR, not where browser is located!
+#RX_ID=TRIG01/G3ZIL       # The /G3ZIL is a suggested addition, use your callsign to show who is using WebSDR
 # alternate receiver that may hear the PI4 beacon
-# RX_ID=SHBRG/G3ZIL      # This is SDR at http://sdr.shbrg.nl:8074/ The /G3ZIL is a suggested addition, use your callsign to show who is using it
-# RX_GRID=JO21PR
+RX_ID=SHBRG/G3ZIL      # This is SDR at http://sdr.shbrg.nl:8074/ The /G3ZIL is a suggested addition, use your callsign to show who is using it
+RX_GRID=JO21PR
+TX_CALL=PA3GCO/B
+TX_GRID=JO21EU
+BAND=3
+FREQUENCY=10368930
+
 ########################################################
 # set up base directory and where wav file from WSJT-X JT4 mode selected will reside
 BASE_DIR=$(pwd)
@@ -41,10 +47,12 @@ then
 
     paste -d "," ${BASE_DIR}/noise.csv ${BASE_DIR}/PI4_detections.csv >${BASE_DIR}/temp.csv  # put both csv data sets on one line
 
-    awk -F"," -v OFS="," -v tx_call="${TX_CALL}" -v tx_call="${TX_CALL}" -v tx_grid="${TX_GRID}" -v band="${BAND}" -v frequency="${FREQUENCY}" \
-     -v rx_id="${RX_ID}" -v rx_grid="${RX_GRID}" ' {print $1,tx_call,tx_grid,band,frequency,rx_id,rx_grid,$2,$3,$4,$6,$7,$8,$9,$10,$11,$12,$13, $14}' \
+    awk -F"," -v OFS="," -v tx_call="${TX_CALL}" -v tx_grid="${TX_GRID}" -v band="${BAND}" -v frequency="${FREQUENCY}" \
+     -v rx_id="${RX_ID}" -v rx_grid="${RX_GRID}" ' {print $1,tx_call,tx_grid,band,frequency,rx_id,rx_grid,$2,$3,$6,$7,$8,$9,$10,$11,$12,$13,$14,$4}' \
      <${BASE_DIR}/temp.csv >${BASE_DIR}/data.csv
     cat ${BASE_DIR}/data.csv
+    sed -i -e '$a\' ${BASE_DIR}/ALL.csv
+    cat  ${BASE_DIR}/data.csv  >> ${BASE_DIR}/ALL.csv
 
     /usr/bin/python3 ${BASE_DIR}/PI4_upload.py ${BASE_DIR}/data.csv       # uploads to database with mode ident PI4 together with metadata
 else

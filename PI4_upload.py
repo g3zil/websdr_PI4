@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # March-May  2020 This version for PI4 detections and noise data Nov 2024  Gwyn Griffiths G3ZIL
-# Version 1.4 Nov 2024 for PI4 24 GHz WebSDR
+# Version 1.4 Nov 2024 to August 2025 for PI4 24 WebSDR
 
 import psycopg2                  # This is the main connection tool, believed to be written in C
 import psycopg2.extras           # This is needed for the batch upload functionality
@@ -19,9 +19,9 @@ batch_file_path=sys.argv[1]
 try:
     with open (batch_file_path) as csv_file:
         csv_data = csv.reader(csv_file, delimiter=',')
-        sql="""INSERT INTO pi4 (time, tx_call, tx_grid, band, frequency, rx_id, rx_grid, mode, rms_noise, \
-        t0_freq, t0_level, t1_freq, t1_level, t2_freq, t2_level, t3_freq, t3_level, score)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
+        sql="""INSERT INTO pi4 (time, tx_call, tx_grid, band, frequency, rx_id, rx_grid, mode, rms_noise,\
+        t0_freq, t0_level, t1_freq, t1_level, t2_freq, t2_level, t3_freq, t3_level, score, splusn)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
         try:
                # connect to the PostgreSQL database
                #print ("Trying to  connect")
