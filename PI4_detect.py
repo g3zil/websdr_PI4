@@ -167,7 +167,7 @@ plt.savefig(PLOT_FILE + '.png', dpi=300)
 peaks = signal.find_peaks_cwt(correl_zoom, widths=np.arange(2,4))  # 2,4 is initial empirical selection
 peakind=remove_adjacent(peaks)                                     # in case single peak shown as two adj freqs
 
-with open(DETECTION_FILE, "w") as out_file:
+with open(DETECTION_FILE, "a") as out_file:
   out_writer=csv.writer(out_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
  
 # find the index at four successively reducing maxima: algorithm finds first max, finds freq and level at that index, then sets max that index to zero

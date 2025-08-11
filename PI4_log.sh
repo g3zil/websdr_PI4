@@ -25,7 +25,7 @@ PI4_WAV_DIR=${BASE_DIR}/save  #  This is where wsjtx puts the wav file. Note we 
 DECODE_CAPTURE_DATE=$(date -u  +%Y-%m-%dT%H:%M:00Z)                   # easier to get time in required format this way
 WAV_FILE=$(ls -ltr ${BASE_DIR}/save| tail -n 1 | awk '{print $9}')    # get the PI4  wav file name to process, every minute
 WAV_FILE_TIME=$(ls -ltr ${BASE_DIR}/save| tail -n 1 | awk '{print substr($9, 8,4)}')
-LAST_MINUTE=$(date -u -v-1M +%Y-%m-%dT%H:%M:00Z)
+LAST_MINUTE=$(date -u  +%Y-%m-%dT%H:%M:00Z --date '-1 min')
 echo "File time ${WAV_FILE_TIME}  last minute time ${LAST_MINUTE}"
 
 # if [[ ${WAV_FILE_TIME} = ${LAST_MINUTE} ]]

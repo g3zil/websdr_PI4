@@ -11,7 +11,7 @@ WAV_DIR=${BASE_DIR}/save
 MODE=PI4
 
 # get the date in format for database
-DECODE_CAPTURE_DATE=$(date -u -v-1M +%Y-%m-%dT%H:%M:00Z) 
+DECODE_CAPTURE_DATE=$(date -u +%Y-%m-%dT%H:%M:00Z --date '-1 min') 
 
 # The noise level part. This is dB on arbitary scale dependent on WebSDR/Browser/WSJT-X signal level - unsatisfactory I know, but this is pilot!
 # Use of sox and RMS in trough of 50 milliseconds is well documented in Griffiths et al. in QEX for WSPR
