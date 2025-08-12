@@ -200,11 +200,11 @@ with open(DETECTION_FILE, "w") as out_file:
       freq_peaks[i]=float(f_zoom[index_max])
       level_peaks[i]=10*np.log10(correl_zoom[index_max])
       print("Revised CWF peak ",i," frequency = ", freq_peaks[i], " Hz  at level = ",f"{level_peaks[i]:.2f}", " dB at index_max ",index_max)
-    if index_max > 3 and index_max < 288: 
+	if index_max > 3 and index_max < 288: 
 	  freq_peaks[i]=freqInterpolate(index_max,2,f_zoom,correl_zoom)
       print("Interpolated CWF peak ",i," frequency = ", f"{freq_peaks[i]:.2f}", " Hz" )
 # Need to remove the peak just found from the array list of peaks
-    to_remove=np.array([index_max_original])
+	to_remove=np.array([index_max_original])
     peakind=np.setdiff1d(peakind,to_remove)
 
 # Some instances where not in frequency order, so have to sort
