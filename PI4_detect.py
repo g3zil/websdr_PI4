@@ -23,13 +23,11 @@ from subprocess import PIPE, run
 # local peak search: takes array index of CWF identified peak, does local search n bins either side for a true peak, returns index
 def findLocalPeak (index, radius,level):
   # This method finds if the true local peak is to one side or other of CWF peak, and if so returns its index
-  if index > 3 and index < 288:     # stay clear of the edges, no concern as likely spurious anyway
-	  cwf_peak=level[index]
-      for i in range (index-radius,index+radius+1):
-         if level[i] > cwf_peak:
-           index=i
-           cwf_peak=level[i]
-      return index
+  cwf_peak=level[index]
+  for i in range (index-radius,index+radius+1):
+     if level[i] > cwf_peak:
+       index=i
+       cwf_peak=level[i]
   return index
 
 # Interpolate between frequency bins based on the weighted linear signal level at peak and either side
