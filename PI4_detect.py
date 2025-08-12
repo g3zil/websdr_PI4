@@ -29,6 +29,7 @@ def findLocalPeak (index, radius,level):
          if level[i] > cwf_peak:
            index=i
            cwf_peak=level[i]
+      return index
   return index
 
 # Interpolate between frequency bins based on the weighted linear signal level at peak and either side
