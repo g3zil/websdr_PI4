@@ -183,10 +183,9 @@ print(peakind)
 with open(DETECTION_FILE, "w") as out_file:
   out_writer=csv.writer(out_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
  
-# find the index at four successively reducing maxima: algorithm finds first max, finds freq and level at that index, then sets max that index to zero
+# find the index at six successively reducing maxima: algorithm finds first max, finds freq and level at that index, then sets max that index to zero
 # and iterates
   for i in range(0,6):
-    print(peakind)
     max=np.argmax(correl_zoom[peakind])
     index_max=peakind[max]
     index_max_original=index_max
@@ -209,7 +208,7 @@ with open(DETECTION_FILE, "w") as out_file:
     peakind=np.setdiff1d(peakind,to_remove)
 
 # Some instances where not in frequency order, so have to sort
-    freq_peaks,level_peaks =bubble_sort(freq_peaks,level_peaks)
+  freq_peaks,level_peaks =bubble_sort(freq_peaks,level_peaks)
 
 # Do we have a valid JT4 detection? Yes if T0 frequency  between T0-T0_tol and  T0+T0_tol
 # We will call this a  score 1 detection, score 2 if T1 at +310 to +320 Hz, 3 if T2 +630 to +650 Hz and 4 if T3 +950 to +970 Hz
