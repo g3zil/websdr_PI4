@@ -5,7 +5,7 @@
 # Daniel's code is licensed under the MIT license, which is a permissive open source license#
 # For PI4 details see  https://rudius.net/oz2m/ngnb/pi4.htm and links therein
 # Two command line arguments, the date-time and the wav file that has been subsampled to 12000 ksps
-# Gwyn Griffiths G3ZIL V1.0 December 2024-August 2025
+# Gwyn Griffiths G3ZIL V1.0 December 2024-August 2025 
 
 import numpy as np
 import matplotlib.pyplot as plt
