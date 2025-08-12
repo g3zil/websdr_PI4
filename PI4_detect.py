@@ -186,6 +186,7 @@ with open(DETECTION_FILE, "w") as out_file:
 # find the index at four successively reducing maxima: algorithm finds first max, finds freq and level at that index, then sets max that index to zero
 # and iterates
   for i in range(0,6):
+    print(peakind)
     max=np.argmax(correl_zoom[peakind])
     index_max=peakind[max]
     index_max_original=index_max
