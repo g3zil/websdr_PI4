@@ -21,7 +21,11 @@ sox ${BASE_DIR}/trimmed.wav ${BASE_DIR}/filtered.wav sinc 1200-2000             
 NOISE=$(sox ${BASE_DIR}/filtered.wav -n stats 2>&1 | grep 'RMS Tr dB' | awk '{print $4}')   # get stats, look for trough value quietest 50 ms and grab value
 RMS_NOISE=$(/usr/bin/bc <<< "scale=2; $NOISE - 29")                                         # account for 800 Hz noise measurement bw to get dB in 1 Hz
 
+# The FFT noise part. This uses essentially same algorithm as in wsprdaenon: sum lowest 30% of fourier coefficients in band 373 Hz to 2933 Hz
+FFT_NOISE=$(python3 fft_noise.py ${WAV_DIR}/$1)
+
 echo "RMS_NOISE (dB)= ${RMS_NOISE}"
+echo "FFT_NOISE (dB)= ${FFT_NOISE}"
 
 # The signal+noise level part. This is dB on arbitary scale dependent on WebSDR/Browser/WSJT-X signal level - unsatisfactory I know, but this is pilot!
 
