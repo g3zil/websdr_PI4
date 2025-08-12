@@ -194,14 +194,15 @@ with open(DETECTION_FILE, "w") as out_file:
     print("CWF peak ",i," frequency = ", freq_peaks[i], " Hz  at level = ",f"{level_peaks[i]:.2f}"," dB at index ",index_max)
 
 # Now call function to look either side to find true peak, revise and print output
-    index_max=findLocalPeak(index_max,3,correl_zoom)
-    freq_peaks[i]=float(f_zoom[index_max])
-    level_peaks[i]=10*np.log10(correl_zoom[index_max])
-    print("Revised CWF peak ",i," frequency = ", freq_peaks[i], " Hz  at level = ",f"{level_peaks[i]:.2f}", " dB at index_max ",index_max)
-
-# Now interpolate the true peak frequency based on correlation level either side
-    freq_peaks[i]=freqInterpolate(index_max,2,f_zoom,correl_zoom)
-    print("Interpolated CWF peak ",i," frequency = ", f"{freq_peaks[i]:.2f}", " Hz" )
+# But leave as is if close to either edge, unlikely a real peak
+	if index_max > 3 and index_max < 288:  
+      index_max=findLocalPeak(index_max,3,correl_zoom)
+      freq_peaks[i]=float(f_zoom[index_max])
+      level_peaks[i]=10*np.log10(correl_zoom[index_max])
+      print("Revised CWF peak ",i," frequency = ", freq_peaks[i], " Hz  at level = ",f"{level_peaks[i]:.2f}", " dB at index_max ",index_max)
+    if index_max > 3 and index_max < 288: 
+	  freq_peaks[i]=freqInterpolate(index_max,2,f_zoom,correl_zoom)
+      print("Interpolated CWF peak ",i," frequency = ", f"{freq_peaks[i]:.2f}", " Hz" )
 # Need to remove the peak just found from the array list of peaks
     to_remove=np.array([index_max_original])
     peakind=np.setdiff1d(peakind,to_remove)
