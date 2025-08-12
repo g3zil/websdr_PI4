@@ -35,4 +35,4 @@ SPLUSN=$(sox ${BASE_DIR}/filtered.wav -n stats 2>&1 | grep 'RMS lev dB' | awk '{
 
 echo "RMS_SIGNAL+NOISE (dB)= ${SPLUSN}"
 # log current time, noise and signal plus noise level estimates and mode and save as csv
-echo ${DECODE_CAPTURE_DATE}","${MODE}","${RMS_NOISE}","${SPLUSN} >${BASE_DIR}"/noise.csv"
+echo ${DECODE_CAPTURE_DATE}","${MODE}","${RMS_NOISE}","${FFT_NOISE}","${SPLUSN} >${BASE_DIR}"/noise.csv"
