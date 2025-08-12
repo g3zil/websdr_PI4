@@ -178,6 +178,7 @@ plt.savefig(PLOT_FILE + '.png', dpi=300)
 #######################################################################################
 
 peaks = signal.find_peaks_cwt(correl_zoom, widths=np.arange(1,4))  # 2,4 is initial empirical selection
+print (peaks)
 peakind=remove_adjacent(peaks)                                     # in case single peak shown as two adj freqs
 
 with open(DETECTION_FILE, "w") as out_file:
