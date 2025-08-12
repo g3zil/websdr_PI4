@@ -20,7 +20,7 @@ import scipy.io.wavfile as wav
 import pylab as plt              # used in initial testing, not routine
 
 fn = sys.argv[1]     # wav file name for processing
-cal_offset=-102.45   # See Excel workbook '24 GHZ WebSDR.xlsx'  August 2025 for derivation to match RMS
+cal_offset=-108.5    # See Excel workbook '24 GHZ WebSDR.xlsx'  August 2025 for derivation to match RMS
 
 samplerate, samples = wav.read(fn)
 #print ("Sample rate and no of samples: ", samplerate,len(samples))
