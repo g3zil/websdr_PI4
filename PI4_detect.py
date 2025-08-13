@@ -88,7 +88,7 @@ BASE_DIR=out("pwd")
 BASE_DIR = BASE_DIR.strip('\n')
 
 DETECTION_FILE=BASE_DIR + '/PI4_detections.csv'
-PLOT_FILE=output/plots/filename'  # the png gets added in savefig as it needs to know the extension
+PLOT_FILE=BASE_DIR + '/output/plots/filename'  # the png gets added in savefig as it needs to know the extension
 ARCHIVE_FILE=BASE_DIR + '/archive/' + wav_file
 # Look for six peaks, as well as the wanted four, above 600 Hz if freq correct, 'sidelobes' can appear at lower
 # frequencies and confuse matters, so screen those out 
