@@ -222,7 +222,7 @@ with open(DETECTION_FILE, "w") as out_file:
         if freq_peaks[3] > freq_peaks[0]-Tn_tol+3*tone_spacing and freq_peaks[3] < freq_peaks[0]+Tn_tol+3*tone_spacing:
           score=4
 # If detections is 4 archive the wav file into the arcive directory
-  if score > 0:	
+  if score > -1:	
     wav_file_name=wav_file[wav_file.rindex('/')+1:]
     shutil.copyfile(wav_file, ARCHIVE_DIR + wav_file_name)
 # output detections data
