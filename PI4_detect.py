@@ -88,8 +88,8 @@ BASE_DIR=out("pwd")
 BASE_DIR = BASE_DIR.strip('\n')
 
 DETECTION_FILE=BASE_DIR + '/PI4_detections.csv'
-PLOT_FILE=BASE_DIR + '/output/plots/filename'  # the png gets added in savefig as it needs to know the extension
-
+PLOT_FILE=output/plots/filename'  # the png gets added in savefig as it needs to know the extension
+ARCHIVE_FILE=BASE_DIR + '/archive/' + wav_file
 # Look for six peaks, as well as the wanted four, above 600 Hz if freq correct, 'sidelobes' can appear at lower
 # frequencies and confuse matters, so screen those out 
 freq_peaks=np.empty(6)
@@ -221,7 +221,8 @@ with open(DETECTION_FILE, "w") as out_file:
         score=3
         if freq_peaks[3] > freq_peaks[0]-Tn_tol+3*tone_spacing and freq_peaks[3] < freq_peaks[0]+Tn_tol+3*tone_spacing:
           score=4
- 
+# If detections is 4 archive the wav file
+	# code here
 # output detections data
   out_writer.writerow([date_time, f"{freq_peaks[0]:.2f}", f"{level_peaks[0]:.2f}",f"{freq_peaks[1]:.2f}", f"{level_peaks[1]:.2f}",\
   f"{freq_peaks[2]:.2f}", f"{level_peaks[2]:.2f}", f"{freq_peaks[3]:.2f}", f"{level_peaks[3]:.2f}", score ])
