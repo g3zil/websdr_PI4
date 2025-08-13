@@ -208,7 +208,7 @@ plt.title('Sync in frequency (zoom)')
 plt.xlabel('Frequency (Hz)')
 plt.ylabel('Correlation');
 
-plt.scatter(freq_peaks[0:3], level_peaks[0:3], s= 40, c = 'red') # plots red dots at the peaks
+plt.scatter(freq_peaks[0:4], 10**(level_peaks[0:4]/10), s= 40, c = 'red') # plots red dots at the peaks
 
 plt.show()
 
