@@ -86,6 +86,7 @@ wav_file=sys.argv[1] 	         	    # wav file name passed in command line
 BASE_DIR=out("pwd")
 BASE_DIR = BASE_DIR.strip('\n')
 wave_file=BASE_DIR+"/archive/"+wav_file
+print("wav file name is ", wave_file)
 # Look for six peaks, as well as the wanted four, above 600 Hz if freq correct, 'sidelobes' can appear at lower
 # frequencies and confuse matters, so screen those out 
 freq_peaks=np.empty(6)
@@ -95,7 +96,7 @@ level_peaks=np.empty(6)
 fs = 12000                                     # Fs is sampling frequency in sps, 11025 for JT4 
 N = 2000                                       # Number of cycles per symbol, so each symbol lasts 0.1667 seconds. 2520 for JT4
 
-rate, x = scipy.io.wavfile.read(wav_file)      # read in the wav file where it has been converted to 12000 sps using sox
+rate, x = scipy.io.wavfile.read(wave_file)      # read in the wav file where it has been converted to 12000 sps using sox
 print ("Samp rate = ",rate, "x.size ",x.size)  # print as a check, x.size with sox-trimmed 25s file is 25 * fs = 300,000
 
 # Baud rate for PI4 is 5.859375 Hz, which, multiplied by K=40, gives tone spacing of 234.375 Hz
@@ -103,8 +104,7 @@ f_shift = 40
 baud_rate=5.859375   	          # characteristic for PI4 in Hz
 tone_spacing=baud_rate*f_shift    # we will look for peaks at this spacing
 T0=683                            # PI4 Tone zero frequency (Hz) - but look out for oscillator offset
-				  # due to the imprecise TCXO in the RTL-dongle of WebSDR. This is a practical figure.
-T0_tol=100			  # A tolerance for T0 to give a window for TCXO stability.
+T0_tol=100			              # A tolerance for T0 to give a window for TCXO stability.
 Tn_tol=10                         # A tolerance for freq diff of tones 1,2,3 from T0, which can be tighter than for T0_tol as it is relative not absolute
 
 # PI4 146 bit pseudo random sync vector provided by Klaus DJ5HG
