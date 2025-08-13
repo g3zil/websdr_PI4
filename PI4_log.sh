@@ -39,12 +39,11 @@ if [[ ${WAV_FILE_TIME} = ${LAST_MINUTE} ]]
 then
     echo 'New data file - so detect PI4 and estimate noise'
     echo "Detection program processing file "${WAV_FILE}
-    sox ${BASE_DIR}/save/${WAV_FILE} ${BASE_DIR}/trimmed.wav trim 0 25    # The PI4 tones are in first 25 seconds
-    sox ${BASE_DIR}/trimmed.wav -r 12000 ${BASE_DIR}/12000.wav            # resample to 12000 sps for PI4
-    python3 ${BASE_DIR}/PI4_detect.py ${DECODE_CAPTURE_DATE} ${BASE_DIR}/12000.wav  > ${BASE_DIR}/PI4_detect.log   # do the processing!
-    sed -i 's/\r//g'  ${BASE_DIR}/PI4_detections.csv                      # Remove carriage return at end of line
+    sox ${BASE_DIR}/save/${WAV_FILE} ${BASE_DIR}/trimmed.wav trim 0 25       # The PI4 tones are in first 25 seconds
+    sox ${BASE_DIR}/trimmed.wav -r 12000 ${BASE_DIR}/${WAV_FILE}_12000.wav   # resample to 12000 sps for PI4
+sed -i 's/\r//g'  ${BASE_DIR}/PI4_detections.csv                         # Remove carriage return at end of line
     
-    ${BASE_DIR}/sn_calc.sh ${WAV_FILE}                                    # script uses SOX to estimate RMS noise
+    ${BASE_DIR}/sn_calc.sh ${WAV_FILE}                                       # script uses SOX to estimate RMS noise
 
     paste -d "," ${BASE_DIR}/noise.csv ${BASE_DIR}/PI4_detections.csv >${BASE_DIR}/temp.csv  # put both csv data sets on one line
 
