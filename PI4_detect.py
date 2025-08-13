@@ -15,7 +15,7 @@ import sys
 import csv
 import subprocess
 from subprocess import PIPE, run
-
+import shutil
 ##########################################################################
 # Functions
 # The CWF approach for peak finding, the jiggle about that peak to find true peak and the interpolation are G3ZIL from HamSCI PSWS research
@@ -89,7 +89,7 @@ BASE_DIR = BASE_DIR.strip('\n')
 
 DETECTION_FILE=BASE_DIR + '/PI4_detections.csv'
 PLOT_FILE=BASE_DIR + '/output/plots/filename'  # the png gets added in savefig as it needs to know the extension
-ARCHIVE_FILE=BASE_DIR + '/archive/' + wav_file
+ARCHIVE_DIR=BASE_DIR + '/archive/'
 # Look for six peaks, as well as the wanted four, above 600 Hz if freq correct, 'sidelobes' can appear at lower
 # frequencies and confuse matters, so screen those out 
 freq_peaks=np.empty(6)
@@ -221,9 +221,10 @@ with open(DETECTION_FILE, "w") as out_file:
         score=3
         if freq_peaks[3] > freq_peaks[0]-Tn_tol+3*tone_spacing and freq_peaks[3] < freq_peaks[0]+Tn_tol+3*tone_spacing:
           score=4
-# If detections is 4 archive the wav file
-  wav_file_name=wav_file[wav_file.rindex('/')+1:]
-  print("Wav file name ",wav_file_name)
+# If detections is 4 archive the wav file into the arcive directory
+  if score > 0:	
+    wav_file_name=wav_file[wav_file.rindex('/')+1:]
+    shutil.copyfile(wav_file, ARCHIVE_DIR + wav_file_name)
 # output detections data
   out_writer.writerow([date_time, f"{freq_peaks[0]:.2f}", f"{level_peaks[0]:.2f}",f"{freq_peaks[1]:.2f}", f"{level_peaks[1]:.2f}",\
   f"{freq_peaks[2]:.2f}", f"{level_peaks[2]:.2f}", f"{freq_peaks[3]:.2f}", f"{level_peaks[3]:.2f}", score ])
