@@ -37,12 +37,15 @@ echo "File time ${WAV_FILE_TIME}  last minute time ${LAST_MINUTE}"
 if [[ ${WAV_FILE_TIME} = ${LAST_MINUTE} ]]
 #if [[ ${WAV_FILE_TIME} != ${LAST_MINUTE} ]]
 then
-    echo 'New data file - so detect PI4 and estimate noise'
+    echo 'New data file - so deBASE_DIR}/${WAV_FILE}tect PI4 and estimate noise'
     echo "Detection program processing file "${WAV_FILE}
     sox ${BASE_DIR}/save/${WAV_FILE} ${BASE_DIR}/trimmed.wav trim 0 25       # The PI4 tones are in first 25 seconds
-    sox ${BASE_DIR}/trimmed.wav -r 12000 ${BASE_DIR}/${WAV_FILE}_12000.wav   # resample to 12000 sps for PI4
-    python3 ${BASE_DIR}/PI4_detect.py ${DECODE_CAPTURE_DATE} ${BASE_DIR}/${WAV_FILE}_12000.wav  > ${BASE_DIR}/PI4_detect.log   # do the processing!
-sed -i 's/\r//g'  ${BASE_DIR}/PI4_detections.csv                         # Remove carriage return at end of line
+    FILE_NAME=${BASE_DIR}/${WAV_FILE}
+    FILE_NAME=$(echo ${FILE_NAME%.*})
+    echo ${FILE_NAME}
+    sox ${BASE_DIR}/trimmed.wav -r 12000 ${FILE_NAME}_12000.wav   # resample to 12000 sps for PI4
+    python3 ${BASE_DIR}/PI4_detect.py ${DECODE_CAPTURE_DATE} ${FILE_NAME}_12000.wav  > ${BASE_DIR}/PI4_detect.log   # do the processing!
+    sed -i 's/\r//g'  ${BASE_DIR}/PI4_detections.csv                         # Remove carriage return at end of line
     
     ${BASE_DIR}/sn_calc.sh ${WAV_FILE}                                       # script uses SOX to estimate RMS noise
 
