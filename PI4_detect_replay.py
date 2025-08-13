@@ -142,18 +142,6 @@ correl_zoom=abs(acq[tsync,zoom_lo:zoom_hi])/normalise         # normalised using
 fsync = np.argmax(acq[tsync,zoom_lo:zoom_hi])
 print("Fsync maximum correlation= ", f_zoom[fsync])
 
-# Larger figure size
-fig_size = [10, 6]
-plt.rcParams['figure.figsize'] = fig_size
-
-# plot sync in zoomed in frequency around expected
-plt.figure(facecolor='w')
-plt.plot(f_zoom, correl_zoom)
-plt.title('Sync in frequency (zoom)')
-plt.xlabel('Frequency (Hz)')
-plt.ylabel('Correlation');
-plt.show()
-
 ######################################################################################
 # This is material from my HamSCI PSWS research on Doppler spectra
 # Scipy find_peaks_cwt approach using continuous wavelet transform 
@@ -209,3 +197,20 @@ if freq_peaks[0] > T0-T0_tol and freq_peaks[0] < T0+T0_tol:
 # print frequency differences, should be 234.375 Hz
 print("f_diff_2-1 ", f"{freq_peaks[1]-freq_peaks[0]:.2f}","f_diff_3-2 ", f"{freq_peaks[2]-freq_peaks[1]:.2f}", "f_diff_4-3 ",\
  f"{freq_peaks[3]-freq_peaks[2]:.2f}", score)
+
+# Larger figure size
+fig_size = [10, 6]
+plt.rcParams['figure.figsize'] = fig_size
+# plot sync in zoomed in frequency around expected
+plt.figure(facecolor='w')
+plt.plot(f_zoom, correl_zoom)
+plt.title('Sync in frequency (zoom)')
+plt.xlabel('Frequency (Hz)')
+plt.ylabel('Correlation');
+
+plt.scatter(freq_peaks[0:3], level_peaks[0:3], s= 40, c = 'red') # plots red dots at the peaks
+
+plt.show()
+
+
+
