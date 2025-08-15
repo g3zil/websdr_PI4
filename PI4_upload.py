@@ -19,9 +19,9 @@ batch_file_path=sys.argv[1]
 try:
     with open (batch_file_path) as csv_file:
         csv_data = csv.reader(csv_file, delimiter=',')
-        sql="""INSERT INTO pi4 (time, tx_call, tx_grid, band, frequency, rx_id, rx_grid, mode, rms_noise,fft_noise,\
-        t0_freq, t0_level, t1_freq, t1_level, t2_freq, t2_level, t3_freq, t3_level, score, splusn)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
+        sql="""INSERT INTO pi4 (time, tx_call, tx_grid, band, frequency, rx_id, rx_grid, mode, rms_noise,\
+        t0_freq, t0_level, t1_freq, t1_level, t2_freq, t2_level, t3_freq, t3_level, score, fft_noise, splusn)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
         try:
                # connect to the PostgreSQL database
                #print ("Trying to  connect")
