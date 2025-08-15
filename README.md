@@ -48,7 +48,7 @@ a) Detect [PI4-encoded] (https://rudius.net/oz2m/ngnb/pi4.htm) digital mode sign
 \
 b) Measure the signal + noise (splusn) level during the carrier interval.\
 \
-c) Measure the noise using an FFT frequency domain algorithm during the pause.\
+c) Measure the noise using an FFT frequency domain algorithm during the pause.
 
 The diagram below outlines the data flow from a web browser connected to a websdr, through WSJT-X, to the scripts comprising this websdr_PI4 application. The database is hosted by the WsprDaemon group and access to the Grafana visulaization tool is available on request.
 
