@@ -9,15 +9,17 @@
 ########################################################
 # set up receiver and transmitter details to go into database table via python
 # unlike for jt4 we do not get some of these from WSJT-X ALL.TXT file
-RX_GRID=JO01qj           #  Maidenhead for Margate WebSDR, not where browser is located!
-RX_ID=TRIG01/G3ZIL       # The /G3ZIL is a suggested addition, use your callsign to show who is using WebSDR
-# alternate receiver that may hear the PI4 beacon
-# RX_ID=SHBRG/G3ZIL      # This is SDR at http://sdr.shbrg.nl:8074/ The /G3ZIL is a suggested addition, use your callsign to show who is using it
-# RX_GRID=JO21PR
+# RX_GRID=JO01qj           #  Maidenhead for Margate WebSDR, not where browser is located!
+# RX_ID=TRIG01/G3ZIL       # The /G3ZIL is a suggested addition, use your callsign to show who is using WebSDR
+# BAND=1.25
+# FREQUENCY=24048930         
 TX_CALL=PA3GCO/B
 TX_GRID=JO21EU
-BAND=1.25
-FREQUENCY=24048930
+# alternate receiver that may hear the PA0GCO/B PI4 beacon
+RX_GRID=JO21PR
+RX_ID=SHBRG/G3ZIL          # This is SDR at http://sdr.shbrg.nl:8074/ use your callsign to show who using
+BAND=3                     # and at 10 GHz
+FREQUENCY=10368923
 
 ########################################################
 # set up base directory and where wav file from WSJT-X JT4 mode selected will reside
