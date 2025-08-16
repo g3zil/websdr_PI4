@@ -165,7 +165,7 @@ plt.plot(f_zoom, correl_zoom)
 plt.title('Sync in frequency (zoom)')
 plt.xlabel('Frequency (Hz)')
 plt.ylabel('Correlation');
-plt.savefig(PLOT_FILE + '.png', dpi=300)
+plt.xlim(600,1600)
 #plt.show()
 
 ######################################################################################
@@ -222,7 +222,7 @@ with open(DETECTION_FILE, "w") as out_file:
         if freq_peaks[3] > freq_peaks[0]-Tn_tol+3*tone_spacing and freq_peaks[3] < freq_peaks[0]+Tn_tol+3*tone_spacing:
           score=4
 # If detections is 4 archive the wav file into the arcive directory
-  if score > 2:	
+  if score > 3:	
     wav_file_name=wav_file[wav_file.rindex('/')+1:]
     shutil.copyfile(wav_file, ARCHIVE_DIR + wav_file_name)
 # output detections data
