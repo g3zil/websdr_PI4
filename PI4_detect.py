@@ -164,8 +164,9 @@ plt.figure(facecolor='w')
 plt.plot(f_zoom, correl_zoom)
 plt.title('Sync in frequency (zoom)')
 plt.xlabel('Frequency (Hz)')
-plt.ylabel('Correlation');
+plt.ylabel('Correlation')
 plt.xlim(600,1600)
+plt.savefig(PLOT_FILE + '_zoom.png', dpi=600)
 #plt.show()
 
 ######################################################################################
