@@ -106,10 +106,10 @@ print ("Samp rate = ",rate, "x.size ",x.size)  # print as a check, x.size with s
 f_shift = 40
 baud_rate=5.859375   	          # characteristic for PI4 in Hz
 tone_spacing=baud_rate*f_shift    # we will look for peaks at this spacing
-T0=683                            # PI4 Tone zero frequency (Hz) - but look out for oscillator offset
+T0=663                            # 683 theory PI4 Tone zero frequency (Hz) - but look out for oscillator offset
 				  # due to the imprecise TCXO in the RTL-dongle of WebSDR. This is a practical figure.
 T0_tol=100			  # A tolerance for T0 to give a window for TCXO stability.
-Tn_tol=10                         # A tolerance for freq diff of tones 1,2,3 from T0, which can be tighter than for T0_tol as it is relative not absolute
+Tn_tol=20                         # A tolerance for freq diff of tones 1,2,3 from T0, which can be tighter than for T0_tol as it is relative not absolute
 
 # PI4 146 bit pseudo random sync vector provided by Klaus DJ5HG
 sync = 2*np.array(list(map(int,'00100111101010100100010001100111100111110011011110101101101000001111101010000011111010010010100001001100000110000110011101110110101010000111000011')), dtype='int8')-1
