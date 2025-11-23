@@ -224,9 +224,9 @@ with open(DETECTION_FILE, "w") as out_file:
           score=4
 # If detections is 4 archive the wav file into the arcive directory
   if score > 3:	
-    wav_file_name=wav_file[wav_file.rindex('/')+1:]
-	wav_file_name=wav_file_name.replace("_12000","")
-    shutil.copyfile(wav_file, ARCHIVE_DIR + wav_file_name)
+	  wav_file_name=wav_file[wav_file.rindex('/')+1:]
+	  wav_file_name=wav_file_name.replace("_12000","")
+	  shutil.copyfile(wav_file, ARCHIVE_DIR + wav_file_name)
 # output detections data
   out_writer.writerow([date_time, f"{freq_peaks[0]:.2f}", f"{level_peaks[0]:.2f}",f"{freq_peaks[1]:.2f}", f"{level_peaks[1]:.2f}",\
   f"{freq_peaks[2]:.2f}", f"{level_peaks[2]:.2f}", f"{freq_peaks[3]:.2f}", f"{level_peaks[3]:.2f}", score ])
