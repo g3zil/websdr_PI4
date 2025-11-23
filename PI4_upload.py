@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # March-May  2020 This version for PI4 detections and noise data Nov 2024  Gwyn Griffiths G3ZIL
 # Version 1.4 Nov 2024 to August 2025 for PI4 24 WebSDR
+#  URL updated to wd1.wsprdaemon.org 23 Nov 2025
 
 import psycopg2                  # This is the main connection tool, believed to be written in C
 import psycopg2.extras           # This is needed for the batch upload functionality
@@ -25,7 +26,7 @@ try:
         try:
                # connect to the PostgreSQL database
                #print ("Trying to  connect")
-               conn = psycopg2.connect("dbname='tutorial' user='wdupload' host='logs1.wsprdaemon.org' password='Whisper2008'")
+               conn = psycopg2.connect("dbname='tutorial' user='wdupload' host='wd1.wsprdaemon.org' password='Whisper2008'")
                connected="Connected"
                #print ("Appear to have connected")
                # create a new cursor
