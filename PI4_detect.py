@@ -108,7 +108,7 @@ baud_rate=5.859375   	          # characteristic for PI4 in Hz
 tone_spacing=baud_rate*f_shift    # we will look for peaks at this spacing
 T0=663                            # 683 theory PI4 Tone zero frequency (Hz) - but look out for oscillator offset
 				  # due to the imprecise TCXO in the RTL-dongle of WebSDR. This is a practical figure.
-T0_tol=100			  # A tolerance for T0 to give a window for TCXO stability.
+T0_tol=30			  # A tolerance for T0 to give a window for TCXO stability.
 Tn_tol=20                         # A tolerance for freq diff of tones 1,2,3 from T0, which can be tighter than for T0_tol as it is relative not absolute
 
 # PI4 146 bit pseudo random sync vector provided by Klaus DJ5HG
