@@ -12,9 +12,12 @@
 RX_GRID=JO01qj           #  Maidenhead for Margate WebSDR, not where browser is located!
 RX_ID=TRIG01/G3ZIL       # The /G3ZIL is a suggested addition, use your callsign to show who is using WebSDR
 BAND=1.25
-FREQUENCY=24048930         
-TX_CALL=PA3GCO/B
-TX_GRID=JO21EU
+#FREQUENCY=24048930         
+#TX_CALL=PA3GCO/B
+#TX_GRID=JO21EU
+FREQUENCY=240489850        
+TX_CALL=OH4HVL
+TX_GRID=JO10KS
 # alternate receiver that may hear the PA0GCO/B PI4 beacon
 # RX_GRID=JO21PR
 # RX_ID=SHBRG/G3ZIL          # This is SDR at http://sdr.shbrg.nl:8074/ use your callsign to show who using
