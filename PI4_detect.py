@@ -92,7 +92,7 @@ PLOT_FILE=BASE_DIR + '/output/plots/filename'  # the png gets added in savefig a
 ARCHIVE_DIR=BASE_DIR + '/archive/'
 # Look for six peaks, as well as the wanted four, above 600 Hz if freq correct, 'sidelobes' can appear at lower
 # frequencies and confuse matters, so screen those out 
-freq_peaks=np.empty(6)
+freq_peaks=np.empty(7)
 level_peaks=np.empty(6)
 
 ########  Start of code from Daniel's work #######################################
