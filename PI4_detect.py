@@ -218,19 +218,31 @@ with open(DETECTION_FILE, "w") as out_file:
     if freq_peaks[i] > T0-T0_tol and freq_peaks[i] < T0+T0_tol:
       score=1
       freq_peaks[0] = freq_peaks[i]
-  for i in range (1,5):
-    if freq_peaks[i] > freq_peaks[0]-Tn_tol+tone_spacing and freq_peaks[i] < freq_peaks[0]+Tn_tol+tone_spacing:
+      k=i
+      break
+	else:
+		k=1
+  for i in range (k,5):
+    if freq_peaks[i] > T0-Tn_tol+tone_spacing and freq_peaks[i] < T0+Tn_tol+tone_spacing:
       score=score+1
       freq_peaks[1] = freq_peaks[i]
-  for i in range (2,6):
-    if freq_peaks[i] > freq_peaks[0]-Tn_tol+tone_spacing and freq_peaks[i] < freq_peaks[0]+Tn_tol+tone_spacing:
+      k=i
+      break
+	else:
+		k=2
+  for i in range (k,6):
+    if freq_peaks[i] > T0-Tn_tol+2*tone_spacing and freq_peaks[i] < T0+Tn_tol+3*tone_spacing:
       score=score+1
       freq_peaks[2] = freq_peaks[i]
-  for i in range (3,7):
-    if freq_peaks[i] > freq_peaks[0]-Tn_tol+tone_spacing and freq_peaks[i] < freq_peaks[0]+Tn_tol+tone_spacing:
+      k=i
+      break
+  else:
+      k=3
+  for i in range (k,7):
+    if freq_peaks[i] > T0-Tn_tol+3*tone_spacing and freq_peaks[i] < T0+Tn_tol+3*tone_spacing:
       score=score+1
-      freq_peaks[2] = freq_peaks[i]
-		
+      freq_peaks[3] = freq_peaks[i]
+     
 # If detections is 4 archive the wav file into the arcive directory
   if score > 3:	
 	  wav_file_name=wav_file[wav_file.rindex('/')+1:]
