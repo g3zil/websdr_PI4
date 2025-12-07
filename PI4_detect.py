@@ -221,7 +221,7 @@ with open(DETECTION_FILE, "w") as out_file:
       k=i
       break
     else:
-		k=1
+      k=1
   for i in range (k,5):
     if freq_peaks[i] > T0-Tn_tol+tone_spacing and freq_peaks[i] < T0+Tn_tol+tone_spacing:
       score=score+1
@@ -229,7 +229,7 @@ with open(DETECTION_FILE, "w") as out_file:
       k=i
       break
     else:
-		k=2
+      k=2
   for i in range (k,6):
     if freq_peaks[i] > T0-Tn_tol+2*tone_spacing and freq_peaks[i] < T0+Tn_tol+3*tone_spacing:
       score=score+1
