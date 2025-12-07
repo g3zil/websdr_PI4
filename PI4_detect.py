@@ -220,16 +220,16 @@ with open(DETECTION_FILE, "w") as out_file:
       freq_peaks[0] = freq_peaks[i]
   for i in range (1,5):
     if freq_peaks[i] > freq_peaks[0]-Tn_tol+tone_spacing and freq_peaks[i] < freq_peaks[0]+Tn_tol+tone_spacing:
-		score=score+1
-		freq_peaks[1] = freq_peaks[i]
+      score=score+1
+      freq_peaks[1] = freq_peaks[i]
   for i in range (2,6):
     if freq_peaks[i] > freq_peaks[0]-Tn_tol+tone_spacing and freq_peaks[i] < freq_peaks[0]+Tn_tol+tone_spacing:
-		score=score+1
-		freq_peaks[2] = freq_peaks[i]
+      score=score+1
+      freq_peaks[2] = freq_peaks[i]
   for i in range (3,7):
     if freq_peaks[i] > freq_peaks[0]-Tn_tol+tone_spacing and freq_peaks[i] < freq_peaks[0]+Tn_tol+tone_spacing:
-		score=score+1
-		freq_peaks[2] = freq_peaks[i]
+      score=score+1
+      freq_peaks[2] = freq_peaks[i]
 		
 # If detections is 4 archive the wav file into the arcive directory
   if score > 3:	
