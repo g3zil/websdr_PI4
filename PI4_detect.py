@@ -5,7 +5,7 @@
 # Daniel's code is licensed under the MIT license, which is a permissive open source license#
 # For PI4 details see  https://rudius.net/oz2m/ngnb/pi4.htm and links therein
 # Two command line arguments, the date-time and the wav file that has been subsampled to 12000 ksps
-# Gwyn Griffiths G3ZIL V1.0 December 2024-August 2025 
+# Gwyn Griffiths G3ZIL V1.1 December 2024-December 2025 
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -184,9 +184,9 @@ print(peakind)
 with open(DETECTION_FILE, "w") as out_file:
   out_writer=csv.writer(out_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
  
-# find the index at six successively reducing maxima: algorithm finds first max, finds freq and level at that index, then sets max that index to zero
+# find the index at seven successively reducing maxima: algorithm finds first max, finds freq and level at that index, then sets max that index to zero
 # and iterates
-  for i in range(0,6):
+  for i in range(0,7):
     max=np.argmax(correl_zoom[peakind])
     index_max=peakind[max]
     index_max_original=index_max
@@ -210,7 +210,7 @@ with open(DETECTION_FILE, "w") as out_file:
 
 # Some instances where not in frequency order, so have to sort
   freq_peaks,level_peaks =bubble_sort(freq_peaks,level_peaks)
-
+  print("freq peaks ", freq_peaks)
 # Do we have a valid JT4 detection? Yes if T0 frequency  between T0-T0_tol and  T0+T0_tol
 # We will call this a  score 1 detection, score 2 if T1 at +310 to +320 Hz, 3 if T2 +630 to +650 Hz and 4 if T3 +950 to +970 Hz
   score=0
