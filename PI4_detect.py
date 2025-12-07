@@ -211,6 +211,7 @@ with open(DETECTION_FILE, "w") as out_file:
 # Some instances where not in frequency order, so have to sort
   freq_peaks,level_peaks =bubble_sort(freq_peaks,level_peaks)
   print("freq peaks ", freq_peaks)
+  print("temporary end")
   sys.exit()
 # Do we have a valid JT4 detection? Yes if T0 frequency  between T0-T0_tol and  T0+T0_tol
 # We will call this a  score 1 detection, score 2 if T1 at +310 to +320 Hz, 3 if T2 +630 to +650 Hz and 4 if T3 +950 to +970 Hz
