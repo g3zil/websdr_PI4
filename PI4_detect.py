@@ -214,14 +214,22 @@ with open(DETECTION_FILE, "w") as out_file:
 # Do we have a valid JT4 detection? Yes if T0 frequency  between T0-T0_tol and  T0+T0_tol
 # We will call this a  score 1 detection, score 2 if T1 at +310 to +320 Hz, 3 if T2 +630 to +650 Hz and 4 if T3 +950 to +970 Hz
   score=0
-  if freq_peaks[0] > T0-T0_tol and freq_peaks[0] < T0+T0_tol:
-    score=1
-    if freq_peaks[1] > freq_peaks[0]-Tn_tol+tone_spacing and freq_peaks[1] < freq_peaks[0]+Tn_tol+tone_spacing:
-      score=2
-      if freq_peaks[2] >  freq_peaks[0]-Tn_tol+2*tone_spacing and freq_peaks[2] < freq_peaks[0]+Tn_tol+2*tone_spacing:
-        score=3
-        if freq_peaks[3] > freq_peaks[0]-Tn_tol+3*tone_spacing and freq_peaks[3] < freq_peaks[0]+Tn_tol+3*tone_spacing:
-          score=4
+  for i in range (0,4):
+    if freq_peaks[i] > T0-T0_tol and freq_peaks[i] < T0+T0_tol:
+      score=1
+      freq_peaks[0] = freq_peaks[i]
+  for i in range (1,5):
+    if freq_peaks[i] > freq_peaks[0]-Tn_tol+tone_spacing and freq_peaks[i] < freq_peaks[0]+Tn_tol+tone_spacing:
+      score=score+1
+	  freq_peaks[1] = freq_peaks[i]
+  for i in range (2,6):
+    if freq_peaks[i] > freq_peaks[0]-Tn_tol+tone_spacing and freq_peaks[i] < freq_peaks[0]+Tn_tol+tone_spacing:
+      score=score+1
+	  freq_peaks[2] = freq_peaks[i]
+  for i in range (3,7):
+    if freq_peaks[i] > freq_peaks[0]-Tn_tol+tone_spacing and freq_peaks[i] < freq_peaks[0]+Tn_tol+tone_spacing:
+      score=score+1
+		
 # If detections is 4 archive the wav file into the arcive directory
   if score > 3:	
 	  wav_file_name=wav_file[wav_file.rindex('/')+1:]
