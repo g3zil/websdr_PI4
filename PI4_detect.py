@@ -220,7 +220,7 @@ with open(DETECTION_FILE, "w") as out_file:
       freq_peaks[0] = freq_peaks[i]
       k=i
       break
-	else:
+    else:
 		k=1
   for i in range (k,5):
     if freq_peaks[i] > T0-Tn_tol+tone_spacing and freq_peaks[i] < T0+Tn_tol+tone_spacing:
@@ -228,7 +228,7 @@ with open(DETECTION_FILE, "w") as out_file:
       freq_peaks[1] = freq_peaks[i]
       k=i
       break
-	else:
+    else:
 		k=2
   for i in range (k,6):
     if freq_peaks[i] > T0-Tn_tol+2*tone_spacing and freq_peaks[i] < T0+Tn_tol+3*tone_spacing:
@@ -236,7 +236,7 @@ with open(DETECTION_FILE, "w") as out_file:
       freq_peaks[2] = freq_peaks[i]
       k=i
       break
-  else:
+    else:
       k=3
   for i in range (k,7):
     if freq_peaks[i] > T0-Tn_tol+3*tone_spacing and freq_peaks[i] < T0+Tn_tol+3*tone_spacing:
