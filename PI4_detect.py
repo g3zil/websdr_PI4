@@ -205,16 +205,17 @@ with open(DETECTION_FILE, "w") as out_file:
         freq_peaks[i]=freqInterpolate(index_max,2,f_zoom,correl_zoom)
         print("Interpolated CWF peak ",i," frequency = ", f"{freq_peaks[i]:.2f}", " Hz" )
 # Need to remove the peak just found from the array list of peaks
-    #to_remove=np.array([index_max_original])
-    #peakind=np.setdiff1d(peakind,to_remove)
+    to_remove=np.array([index_max_original])
+    peakind=np.setdiff1d(peakind,to_remove)
 
 # Some instances where not in frequency order, so have to sort
   freq_peaks,level_peaks =bubble_sort(freq_peaks,level_peaks)
+  n_peaks=len(freq_peaks)
   print("freq peaks ", freq_peaks)
 # Do we have a valid JT4 detection? Yes if T0 frequency  between T0-T0_tol and  T0+T0_tol
 # We will call this a  score 1 detection, score 2 if T1 at +310 to +320 Hz, 3 if T2 +630 to +650 Hz and 4 if T3 +950 to +970 Hz
   score=0
-  for i in range (0,4):
+  for i in range (0,n_peaks-1):
     if freq_peaks[i] > T0-T0_tol and freq_peaks[i] < T0+T0_tol:
       score=1
       freq_peaks[0] = freq_peaks[i]
@@ -222,7 +223,7 @@ with open(DETECTION_FILE, "w") as out_file:
       break
     else:
       k=1
-  for i in range (k,5):
+  for i in range (k,n_peaks-1):
     if freq_peaks[i] > T0-Tn_tol+tone_spacing and freq_peaks[i] < T0+Tn_tol+tone_spacing:
       score=score+1
       freq_peaks[1] = freq_peaks[i]
@@ -230,7 +231,7 @@ with open(DETECTION_FILE, "w") as out_file:
       break
     else:
       k=2
-  for i in range (k,6):
+  for i in range (k,n_peaks-1):
     if freq_peaks[i] > T0-Tn_tol+2*tone_spacing and freq_peaks[i] < T0+Tn_tol+2*tone_spacing:
       score=score+1
       freq_peaks[2] = freq_peaks[i]
@@ -238,7 +239,7 @@ with open(DETECTION_FILE, "w") as out_file:
       break
     else:
       k=3
-  for i in range (k,7):
+  for i in range (k,n_peaks-1):
     if freq_peaks[i] > T0-Tn_tol+3*tone_spacing and freq_peaks[i] < T0+Tn_tol+3*tone_spacing:
       score=score+1
       freq_peaks[3] = freq_peaks[i]
