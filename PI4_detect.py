@@ -178,7 +178,7 @@ plt.savefig(PLOT_FILE + '_zoom.png', dpi=600)
 # but they will be different levels, generally decreasing with increasing baseband frequency
 #######################################################################################
 
-peaks = signal.find_peaks_cwt(correl_zoom, widths=np.arange(1,4))  # 2,4 is initial empirical selection
+peaks = signal.find_peaks_cwt(correl_zoom, widths=np.arange(1,5))  # 2,4 is initial empirical selection
 peakind=remove_adjacent(peaks)                                     # in case single peak shown as two adj freqs
 print(peakind)
 with open(DETECTION_FILE, "w") as out_file:
