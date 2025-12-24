@@ -261,7 +261,7 @@ with open(DETECTION_FILE, "w") as out_file:
 
 # Some instances where not in frequency order, so have to sort, then remove instances where within set margin of another peak
   freq_peaks,level_peaks =bubble_sort(freq_peaks,level_peaks)
-  freq_peaks=remove_close_numbers(freq_peaks, 5)
+  freq_peaks=remove_close_numbers(freq_peaks, 10)
   n_peaks=len(freq_peaks)
   print("freq peaks ", freq_peaks)
 	
