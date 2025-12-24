@@ -277,7 +277,7 @@ with open(DETECTION_FILE, "w") as out_file:
   for i, j, diff in result:
     if freq_peaks[i] > T0-T0_tol:  # ignore frequnecies below theoretical tone zero and allowed margin
       print(f"  Indices ({i}, {j}): values {freq_peaks[i]} and {freq_peaks[j]}, difference = {diff}")  
-
+  print("Score is: ", score)
 # If we find three pairs archive the wav file into the arcive directory
   if score > 2:	
 	  wav_file_name=wav_file[wav_file.rindex('/')+1:]
