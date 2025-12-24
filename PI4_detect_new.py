@@ -273,7 +273,7 @@ with open(DETECTION_FILE, "w") as out_file:
   score=0
   exclusion_margin=5  # to avoid duplicates
 	
-  result = find_pairs_within_margin(freq_peaks, tone_spacing, Tn_tol, exclusion_margin)
+  result = find_pairs_with_difference(freq_peaks, tone_spacing, Tn_tol, exclusion_margin)
   print(f"Target difference: {tone_spacing} ± {Tn_tol}")
   print(result)
   print(f"\nFound {len(result)} pairs:")  
