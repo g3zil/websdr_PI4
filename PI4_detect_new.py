@@ -5,6 +5,7 @@
 # Daniel's code is licensed under the MIT license, which is a permissive open source license#
 # For PI4 details see  https://rudius.net/oz2m/ngnb/pi4.htm and links therein
 # Two command line arguments, the date-time and the wav file that has been subsampled to 12000 ksps
+# 24 Dec 2025 scoring code where frequency differences line up correctly from Claude AI Sonnet 4.5
 # Gwyn Griffiths G3ZIL V1.1 December 2024-December 2025 
 
 import numpy as np
@@ -74,6 +75,31 @@ def remove_adjacent(L):      # This function removes instances where a single pe
 def out(command):
     result = run(command, stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
     return result.stdout
+
+# Function from Claude AI
+def find_pairs_within_margin(arr, target_diff, margin):
+    """
+    Find pairs of indices where the difference between values is within a margin of the target difference.
+    Args:
+        arr: List or array of numbers
+        target_diff: The target difference value
+        margin: Acceptable margin around the target difference
+    
+    Returns:
+        List of tuples (i, j, actual_diff) where i < j
+    """
+    pairs = []
+    n = len(arr)
+    
+    for i in range(n):
+        for j in range(i + 1, n):
+            diff = abs(arr[j] - arr[i])
+            
+            # Check if difference is within target ± margin
+            if abs(diff - target_diff) <= margin:
+                pairs.append((i, j, diff))
+    
+    return pairs
 	
 ############################################################################
 
@@ -106,10 +132,8 @@ print ("Samp rate = ",rate, "x.size ",x.size)  # print as a check, x.size with s
 f_shift = 40
 baud_rate=5.859375   	          # characteristic for PI4 in Hz
 tone_spacing=baud_rate*f_shift    # we will look for peaks at this spacing
-T0=663                            # 683 theory PI4 Tone zero frequency (Hz) - but look out for oscillator offset
-				  # due to the imprecise TCXO in the RTL-dongle of WebSDR. This is a practical figure.
-T0_tol=30			  # A tolerance for T0 to give a window for TCXO stability.
-Tn_tol=20                         # A tolerance for freq diff of tones 1,2,3 from T0, which can be tighter than for T0_tol as it is relative not absolute
+T0=683                            # 683 theory PI4 Tone zero frequency (Hz) - but look out for oscillator offset
+Tn_tol=15                         # A tolerance for freq diff of tones 1,2,3 from T0, which can be tighter than for T0_tol as it is relative not absolute
 
 # PI4 146 bit pseudo random sync vector provided by Klaus DJ5HG
 sync = 2*np.array(list(map(int,'00100111101010100100010001100111100111110011011110101101101000001111101010000011111010010010100001001100000110000110011101110110101010000111000011')), dtype='int8')-1
@@ -212,38 +236,16 @@ with open(DETECTION_FILE, "w") as out_file:
   freq_peaks,level_peaks =bubble_sort(freq_peaks,level_peaks)
   n_peaks=len(freq_peaks)
   print("freq peaks ", freq_peaks)
-# Do we have a valid JT4 detection? Yes if T0 frequency  between T0-T0_tol and  T0+T0_tol
-  
+	
+# Do we have a valid JT4 detection?
+# Look for correct tone_spacing within tolerance either side set by Tn_tol, take indicies for matches
 # We will call this a  score 1 detection, score 2 if T1 at +310 to +320 Hz, 3 if T2 +630 to +650 Hz and 4 if T3 +950 to +970 Hz
   score=0
-  for i in range (0,n_peaks-1):
-    if freq_peaks[i] > T0-T0_tol and freq_peaks[i] < T0+T0_tol:
-      score=1
-      freq_peaks[0] = freq_peaks[i]
-      k=i
-      break
-    else:
-      k=1
-  for i in range (k,n_peaks-1):
-    if freq_peaks[i] > T0-Tn_tol+tone_spacing and freq_peaks[i] < T0+Tn_tol+tone_spacing:
-      score=score+1
-      freq_peaks[1] = freq_peaks[i]
-      k=i
-      break
-    else:
-      k=2
-  for i in range (k,n_peaks-1):
-    if freq_peaks[i] > T0-Tn_tol+2*tone_spacing and freq_peaks[i] < T0+Tn_tol+2*tone_spacing:
-      score=score+1
-      freq_peaks[2] = freq_peaks[i]
-      k=i
-      break
-    else:
-      k=3
-  for i in range (k,n_peaks-1):
-    if freq_peaks[i] > T0-Tn_tol+3*tone_spacing and freq_peaks[i] < T0+Tn_tol+3*tone_spacing:
-      score=score+1
-      freq_peaks[3] = freq_peaks[i]
+  result = find_pairs_within_margin(freq_peaks, tone_spacing, Tn_tol)
+  print(f"Target difference: {tone_spacing} ± {Tn_tol}")
+  print(f"\nFound {len(result)} pairs:")  
+  for i, j, diff in result:
+    print(f"  Indices ({i}, {j}): values {freq_peaks[i]} and {freq_peaks[j]}, difference = {diff}")  
      
 # If detections is 4 archive the wav file into the arcive directory
   if score > 3:	
