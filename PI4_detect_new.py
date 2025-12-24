@@ -120,11 +120,9 @@ def find_pairs_with_difference(arr, target_diff, diff_margin, exclusion_margin):
                 pairs.append((i, j))
                 
                 # Mark indices within exclusion_margin as excluded
-                for k in range(max(0, i - exclusion_margin), 
-                              min(n, i + exclusion_margin + 1)):
+                for k in range(max(0, i - exclusion_margin), min(n, i + exclusion_margin + 1)):
                     excluded_indices.add(k)
-                for k in range(max(0, j - exclusion_margin), 
-                              min(n, j + exclusion_margin + 1)):
+                for k in range(max(0, j - exclusion_margin), min(n, j + exclusion_margin + 1)):
                     excluded_indices.add(k)
                 
                 break  # Move to next i after finding a pair
