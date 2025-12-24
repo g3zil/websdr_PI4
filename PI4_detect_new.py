@@ -77,27 +77,57 @@ def out(command):
     return result.stdout
 
 # Function from Claude AI
-def find_pairs_within_margin(arr, target_diff, margin):
+def find_pairs_with_difference(arr, target_diff, diff_margin, exclusion_margin):
     """
-    Find pairs of indices where the difference between values is within a margin of the target difference.
-    Args:
-        arr: List or array of numbers
-        target_diff: The target difference value
-        margin: Acceptable margin around the target difference
+    Find pairs of indices whose value difference is close to target_diff.
+    Excludes pairs near previously found pairs.
     
+    Parameters:
+    -----------
+    arr : array-like
+        One dimensional array of numbers
+    target_diff : float
+        The target difference between pair values
+    diff_margin : float
+        Acceptable margin for the difference (±diff_margin)
+    exclusion_margin : int
+        Index distance to exclude around previously found pairs
+        
     Returns:
-        List of tuples (i, j, actual_diff) where i < j
+    --------
+    list of tuples
+        List of (index1, index2) tuples representing valid pairs
     """
-    pairs = []
+    arr = np.array(arr)
     n = len(arr)
+    pairs = []
+    excluded_indices = set()
     
+    # Check all possible pairs
     for i in range(n):
+        if i in excluded_indices:
+            continue
+            
         for j in range(i + 1, n):
+            if j in excluded_indices:
+                continue
+            
+            # Calculate the difference
             diff = abs(arr[j] - arr[i])
             
-            # Check if difference is within target ± margin
-            if abs(diff - target_diff) <= margin:
-                pairs.append((i, j, diff))
+            # Check if difference is within margin of target
+            if abs(diff - target_diff) <= diff_margin:
+                pairs.append((i, j))
+                
+                # Mark indices within exclusion_margin as excluded
+                for k in range(max(0, i - exclusion_margin), 
+                              min(n, i + exclusion_margin + 1)):
+                    excluded_indices.add(k)
+                for k in range(max(0, j - exclusion_margin), 
+                              min(n, j + exclusion_margin + 1)):
+                    excluded_indices.add(k)
+                
+                break  # Move to next i after finding a pair
     
     return pairs
 	
@@ -241,7 +271,9 @@ with open(DETECTION_FILE, "w") as out_file:
 # Look for correct tone_spacing within tolerance either side set by Tn_tol, take indicies for matches
 # We will call this a  score 1 detection, score 2 if T1 at +310 to +320 Hz, 3 if T2 +630 to +650 Hz and 4 if T3 +950 to +970 Hz
   score=0
-  result = find_pairs_within_margin(freq_peaks, tone_spacing, Tn_tol)
+  exclusion_margin=5  # to avoid duplicates
+	
+  result = find_pairs_within_margin(freq_peaks, tone_spacing, Tn_tol, exclusion_margin)
   print(f"Target difference: {tone_spacing} ± {Tn_tol}")
   print(result)
   print(f"\nFound {len(result)} pairs:")  
