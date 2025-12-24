@@ -277,8 +277,10 @@ with open(DETECTION_FILE, "w") as out_file:
     if freq_peaks[i] > T0-T0_tol:  # ignore frequnecies below theoretical tone zero and allowed margin
       print(f"  Indices ({i}, {j}): values {freq_peaks[i]} and {freq_peaks[j]}, difference = {diff}") 
       freq_peaks[score]=freq_peaks[i]
-      if score == 2:
+      level_peaks[score]=level_peaks[i]
+      if score == 2:                      # for the last pair we need to pick up the j index for second index of pair
         freq_peaks[3]=freq_peaks[j]
+        level_peaks[3]=level_peaks[j]
       score=score+1
   print("Score is: ", score)
 # If we find three pairs archive the wav file into the arcive directory
@@ -289,7 +291,4 @@ with open(DETECTION_FILE, "w") as out_file:
 # output detections data
   out_writer.writerow([date_time, f"{freq_peaks[0]:.2f}", f"{freq_peaks[0]:.2f}",f"{freq_peaks[1]:.2f}", f"{level_peaks[1]:.2f}",\
   f"{freq_peaks[2]:.2f}", f"{level_peaks[2]:.2f}", f"{freq_peaks[3]:.2f}", f"{level_peaks[3]:.2f}", score ])
-# print frequency differences, should be 234.375 Hz
-    
-print("f_diff_2-1 ", f"{freq_peaks[1]-freq_peaks[0]:.2f}","f_diff_3-2 ", f"{freq_peaks[2]-freq_peaks[1]:.2f}", "f_diff_4-3 ",\
- f"{freq_peaks[3]-freq_peaks[2]:.2f}", score)
+
