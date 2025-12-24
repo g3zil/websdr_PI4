@@ -133,7 +133,7 @@ f_shift = 40
 baud_rate=5.859375   	          # characteristic for PI4 in Hz
 tone_spacing=baud_rate*f_shift    # we will look for peaks at this spacing
 T0=683                            # 683 theory PI4 Tone zero frequency (Hz) - but look out for oscillator offset
-Tn_tol=15                         # A tolerance for freq diff of tones 1,2,3 from T0, which can be tighter than for T0_tol as it is relative not absolute
+Tn_tol=10                         # A tolerance for freq diff of tones 1,2,3 from T0, which can be tighter than for T0_tol as it is relative not absolute
 
 # PI4 146 bit pseudo random sync vector provided by Klaus DJ5HG
 sync = 2*np.array(list(map(int,'00100111101010100100010001100111100111110011011110101101101000001111101010000011111010010010100001001100000110000110011101110110101010000111000011')), dtype='int8')-1
