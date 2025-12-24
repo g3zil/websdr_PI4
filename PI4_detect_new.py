@@ -272,11 +272,11 @@ with open(DETECTION_FILE, "w") as out_file:
 	
   result = find_pairs_within_margin(freq_peaks, tone_spacing, Tn_tol)
   print(f"Target difference: {tone_spacing} ± {Tn_tol}")
-  print(result)
   print(f"\nFound {len(result)} pairs:") 
   for i, j, diff in result:
     if freq_peaks[i] > T0-T0_tol:  # ignore frequnecies below theoretical tone zero and allowed margin
-      print(f"  Indices ({i}, {j}): values {freq_peaks[i]} and {freq_peaks[j]}, difference = {diff}")  
+      print(f"  Indices ({i}, {j}): values {freq_peaks[i]} and {freq_peaks[j]}, difference = {diff}") 
+      score=score+1
   print("Score is: ", score)
 # If we find three pairs archive the wav file into the arcive directory
   if score > 2:	
