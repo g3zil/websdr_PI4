@@ -271,7 +271,7 @@ with open(DETECTION_FILE, "w") as out_file:
 # Look for correct tone_spacing within tolerance either side set by Tn_tol, take indicies for matches
 # We will call this a  score 1 detection, score 2 if T1 at +310 to +320 Hz, 3 if T2 +630 to +650 Hz and 4 if T3 +950 to +970 Hz
   score=0
-  exclusion_margin=5  # to avoid duplicates
+  exclusion_margin=1  # to avoid duplicates
 	
   result = find_pairs_with_difference(freq_peaks, tone_spacing, Tn_tol, exclusion_margin)
   print(f"Target difference: {tone_spacing} ± {Tn_tol}")
