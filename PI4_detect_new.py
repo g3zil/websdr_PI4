@@ -118,8 +118,8 @@ PLOT_FILE=BASE_DIR + '/output/plots/filename'  # the png gets added in savefig a
 ARCHIVE_DIR=BASE_DIR + '/archive/'
 # Look for six peaks, as well as the wanted four, above 600 Hz if freq correct, 'sidelobes' can appear at lower
 # frequencies and confuse matters, so screen those out 
-freq_peaks=np.empty(7)
-level_peaks=np.empty(7)
+freq_peaks=np.empty(8)
+level_peaks=np.empty(8)
 
 ########  Start of code from Daniel's work #######################################
 fs = 12000                                     # Fs is sampling frequency in sps, 11025 for JT4 
