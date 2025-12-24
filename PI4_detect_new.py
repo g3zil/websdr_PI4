@@ -159,6 +159,7 @@ f_shift = 40
 baud_rate=5.859375   	          # characteristic for PI4 in Hz
 tone_spacing=baud_rate*f_shift    # we will look for peaks at this spacing
 T0=683                            # 683 theory PI4 Tone zero frequency (Hz) - but look out for oscillator offset
+T0_tol=60
 Tn_tol=10                         # A tolerance for freq diff of tones 1,2,3 from T0, which can be tighter than for T0_tol as it is relative not absolute
 
 # PI4 146 bit pseudo random sync vector provided by Klaus DJ5HG
@@ -272,12 +273,13 @@ with open(DETECTION_FILE, "w") as out_file:
   result = find_pairs_within_margin(freq_peaks, tone_spacing, Tn_tol)
   print(f"Target difference: {tone_spacing} ± {Tn_tol}")
   print(result)
-  print(f"\nFound {len(result)} pairs:")  
+  print(f"\nFound {len(result)} pairs:") 
   for i, j, diff in result:
-    print(f"  Indices ({i}, {j}): values {freq_peaks[i]} and {freq_peaks[j]}, difference = {diff}")  
-     
-# If detections is 4 archive the wav file into the arcive directory
-  if score > 3:	
+    if abs(freq_peaks[i]> T0-T0_tol:  # ignore frequnecies below theoretical tone zero and allowed margin
+	  print(f"  Indices ({i}, {j}): values {freq_peaks[i]} and {freq_peaks[j]}, difference = {diff}")  
+
+# If we find three pairs archive the wav file into the arcive directory
+  if score > 2:	
 	  wav_file_name=wav_file[wav_file.rindex('/')+1:]
 	  wav_file_name=wav_file_name.replace("_12000","")
 	  shutil.copyfile(wav_file, ARCHIVE_DIR + wav_file_name)
