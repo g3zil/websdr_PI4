@@ -115,8 +115,6 @@ def remove_close_numbers(arr, margin):
     Returns:
         List with close numbers removed
     """
-    if not arr:
-        return []
     
     # Sort the array to make comparison easier
     sorted_arr = sorted(arr)
