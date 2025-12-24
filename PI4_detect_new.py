@@ -275,7 +275,7 @@ with open(DETECTION_FILE, "w") as out_file:
   print(result)
   print(f"\nFound {len(result)} pairs:") 
   for i, j, diff in result:
-    if abs(freq_peaks[i]> T0-T0_tol:  # ignore frequnecies below theoretical tone zero and allowed margin
+    if freq_peaks[i] > T0-T0_tol:  # ignore frequnecies below theoretical tone zero and allowed margin
 	  print(f"  Indices ({i}, {j}): values {freq_peaks[i]} and {freq_peaks[j]}, difference = {diff}")  
 
 # If we find three pairs archive the wav file into the arcive directory
