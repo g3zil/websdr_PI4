@@ -44,7 +44,6 @@ def freqInterpolate (index, radius, x, level):
 
 # Bubble sort for frequency and correlation at that frequency in CWF peaks list
 def bubble_sort(freq_peaks,level_peaks):
-    print(len(freq_peaks))
    # Outer loop to iterate through the list n times
     for n in range(len(freq_peaks) - 1, 0, -1):
         # Initialize swapped to track if any swaps occur
@@ -59,14 +58,6 @@ def bubble_sort(freq_peaks,level_peaks):
         # If no swaps occurred, the list is already sorted
         if not swapped:
           break
-    if freq_peaks[0] <600:          # This is where we check for and remove sidelobes from correlation below 600 Hz
-        freq_peaks=np.delete(freq_peaks,0)
-        level_peaks=np.delete(level_peaks,0)
-        print("First deleted, new first: ", f"{freq_peaks[0]:.2f}") 
-        if freq_peaks[0] <600:      #  the second one can only be below 600 if the first one was
-          freq_peaks=np.delete(freq_peaks,0)
-          level_peaks=np.delete(level_peaks,0)
-          print("Second deleted, new first: ", f"{freq_peaks[0]:.2f}")
     return freq_peaks, level_peaks
 
 def remove_adjacent(L):      # This function removes instances where a single peak has adjacent frequencies
@@ -191,10 +182,10 @@ print("Time shift for max correl = ",f"{tsync/2/baud_rate:.2f}", " s")  # conver
 # Generate frequency axis, and then form frequency and correlation arrays for zoomed-in frequency span
 fs = np.arange(-N//2, -N//2 + acq.shape[1])*baud_rate
 fsync = np.argmax(acq[tsync,:])
-zoom_lo=1033
+zoom_lo=1084
 zoom_hi=1325
-f_zoom=fs[zoom_lo:zoom_hi]                         	# This zooms in to ~200 to 1900 Hz. Some wav files are off frequency. 
-				   			# Shifted by f_shift for symmetry +/- frequencies
+f_zoom=fs[zoom_lo:zoom_hi]        # This zooms to pos freqs ~500 to 1900 Hz. Allow for wav files off frequency. 
+				   			      # Shifted by f_shift for symmetry +/- frequencies
 correl_zoom=abs(acq[tsync,zoom_lo:zoom_hi])/normalise         # normalised using factor calculated above
 fsync = np.argmax(acq[tsync,zoom_lo:zoom_hi])
 print("Fsync maximum correlation= ", f_zoom[fsync])
