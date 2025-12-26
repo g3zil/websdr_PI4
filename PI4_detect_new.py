@@ -103,7 +103,7 @@ def find_pairs_within_margin(arr, target_diff, margin):
     
     return pairs
 
-def remove_close_numbers(arr, margin):
+def remove_close_peaks(arr, margin):
     """
     Remove numbers from array that are within a margin of each other.
     Keeps the first occurrence when numbers are close.
@@ -142,10 +142,12 @@ BASE_DIR = BASE_DIR.strip('\n')
 DETECTION_FILE=BASE_DIR + '/PI4_detections.csv'
 PLOT_FILE=BASE_DIR + '/output/plots/filename'  # the png gets added in savefig as it needs to know the extension
 ARCHIVE_DIR=BASE_DIR + '/archive/'
-# Look for six peaks, as well as the wanted four, above 600 Hz if freq correct, 'sidelobes' can appear at lower
+# Look for N_peaks peaks as wanted 4 may not be highest correlation, 'sidelobes' can appear at lower
 # frequencies and confuse matters, so screen those out 
-freq_peaks=np.empty(8)
-level_peaks=np.empty(8)
+N_peaks=8
+Prox_margin=10                      # Proximity margin, for secondary peaks close to already identified but not adjacent
+freq_peaks=np.empty(N_peaks)
+level_peaks=np.empty(N_peaks)
 
 ########  Start of code from Daniel's work #######################################
 fs = 12000                                     # Fs is sampling frequency in sps, 11025 for JT4 
@@ -157,9 +159,9 @@ print ("Samp rate = ",rate, "x.size ",x.size)  # print as a check, x.size with s
 # Baud rate for PI4 is 5.859375 Hz, which, multiplied by K=40, gives tone spacing of 234.375 Hz
 f_shift = 40
 baud_rate=5.859375   	          # characteristic for PI4 in Hz
-tone_spacing=baud_rate*f_shift    # we will look for peaks at this spacing
+tone_spacing=baud_rate*f_shift    # we will look for peaks at this spacing i.e 234 Hz
 T0=683                            # 683 theory PI4 Tone zero frequency (Hz) - but look out for oscillator offset
-T0_tol=60
+T0_tol=60                         # ON0HVL is not all GPSDO locked, and does drift
 Tn_tol=10                         # A tolerance for freq diff of tones 1,2,3 from T0, which can be tighter than for T0_tol as it is relative not absolute
 
 # PI4 146 bit pseudo random sync vector provided by Klaus DJ5HG
@@ -197,6 +199,7 @@ correl_zoom=abs(acq[tsync,zoom_lo:zoom_hi])/normalise         # normalised using
 fsync = np.argmax(acq[tsync,zoom_lo:zoom_hi])
 print("Fsync maximum correlation= ", f_zoom[fsync])
 
+# Plot figures into plot files for reference if interested
 # Larger figure size
 fig_size = [10, 6]
 plt.rcParams['figure.figsize'] = fig_size
@@ -229,15 +232,15 @@ plt.savefig(PLOT_FILE + '_zoom.png', dpi=600)
 # but they will be different levels, generally decreasing with increasing baseband frequency
 #######################################################################################
 
-peaks = signal.find_peaks_cwt(correl_zoom, widths=np.arange(1,5))  # 2,4 is initial empirical selection
+peaks = signal.find_peaks_cwt(correl_zoom, widths=np.arange(1,5))  # 1,5 captures narrow and wide spectra, but is empirical
 peakind=remove_adjacent(peaks)                                     # in case single peak shown as two adj freqs
-print(peakind)
+print("Finding N_peaks = ", N_peaks, " : ", peakind)                                                     # list of the N_peaks found
 with open(DETECTION_FILE, "w") as out_file:
   out_writer=csv.writer(out_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
  
 # find the index at eight successively reducing maxima: algorithm finds first max, finds freq and level at that index, then sets max that index to zero
 # and iterates
-  for i in range(0,8):
+  for i in range(0,N_peaks):
     max=np.argmax(correl_zoom[peakind])
     index_max=peakind[max]
     index_max_original=index_max
@@ -245,23 +248,20 @@ with open(DETECTION_FILE, "w") as out_file:
     level_peaks[i]=10*np.log10(correl_zoom[index_max])
     print("CWF peak ",i," frequency = ", freq_peaks[i], " Hz  at level = ",f"{level_peaks[i]:.2f}"," dB at index ",index_max)
 
-# Now call function to look either side to find true peak, revise and print output
-# Only search above 597.66 Hz index 69 
-    if index_max > 69 and index_max < 288:  
-        index_max=findLocalPeak(index_max,3,correl_zoom)
-        freq_peaks[i]=float(f_zoom[index_max])
-        level_peaks[i]=10*np.log10(correl_zoom[index_max])
-        print("Revised CWF peak ",i," frequency = ", freq_peaks[i], " Hz  at level = ",f"{level_peaks[i]:.2f}", " dB at index_max ",index_max)
-    if index_max > 69 and index_max < 288: 
-        freq_peaks[i]=freqInterpolate(index_max,2,f_zoom,correl_zoom)
-        print("Interpolated CWF peak ",i," frequency = ", f"{freq_peaks[i]:.2f}", " Hz" )
+# Now call function to look either side to find true peak, revise, print output, then interpolate for finer resolution 
+    index_max=findLocalPeak(index_max,3,correl_zoom)
+    freq_peaks[i]=float(f_zoom[index_max])
+    level_peaks[i]=10*np.log10(correl_zoom[index_max])
+    print("Revised CWF peak ",i," frequency = ", freq_peaks[i], " Hz  at level = ",f"{level_peaks[i]:.2f}", " dB at index_max ",index_max)
+    freq_peaks[i]=freqInterpolate(index_max,2,f_zoom,correl_zoom)
+    print("Interpolated CWF peak ",i," frequency = ", f"{freq_peaks[i]:.2f}", " Hz" )
 # Need to remove the peak just found from the array list of peaks
     to_remove=np.array([index_max_original])
     peakind=np.setdiff1d(peakind,to_remove)
 
-# Some instances where not in frequency order, so have to sort, then remove instances where within set margin of another peak
+# Identified peaks not necessarily in frequency order, so sort, then remove instances where within set margin of already-found peak
   freq_peaks,level_peaks =bubble_sort(freq_peaks,level_peaks)
-  freq_peaks=remove_close_numbers(freq_peaks, 10)
+  freq_peaks=remove_close_peaks(freq_peaks, Prox_margin)
   n_peaks=len(freq_peaks)
   print("freq peaks ", freq_peaks)
 	
