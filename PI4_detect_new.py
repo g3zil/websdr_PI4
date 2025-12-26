@@ -281,6 +281,6 @@ with open(DETECTION_FILE, "w") as out_file:
 	  wav_file_name=wav_file_name.replace("_12000","")
 	  shutil.copyfile(wav_file, ARCHIVE_DIR + wav_file_name)
 # output detections data
-  out_writer.writerow([date_time, f"{freq_peaks[0]:.2f}", f"{freq_peaks[0]:.2f}",f"{freq_peaks[1]:.2f}", f"{level_peaks[1]:.2f}",\
+  out_writer.writerow([date_time, f"{freq_peaks[0]:.2f}", f"{level_peaks[0]:.2f}",f"{freq_peaks[1]:.2f}", f"{level_peaks[1]:.2f}",\
   f"{freq_peaks[2]:.2f}", f"{level_peaks[2]:.2f}", f"{freq_peaks[3]:.2f}", f"{level_peaks[3]:.2f}", score ])
 
