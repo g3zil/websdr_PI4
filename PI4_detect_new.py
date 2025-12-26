@@ -234,7 +234,7 @@ plt.savefig(PLOT_FILE + '_zoom.png', dpi=600)
 
 peaks = signal.find_peaks_cwt(correl_zoom, widths=np.arange(1,5))  # 1,5 captures narrow and wide spectra, but is empirical
 peakind=remove_adjacent(peaks)                                     # in case single peak shown as two adj freqs
-print("Finding N_peaks = ", N_peaks, " : ", peakind)                                                     # list of the N_peaks found
+# print("Array of indicies of raw peaks", peakind)                                                     # list of the N_peaks found
 with open(DETECTION_FILE, "w") as out_file:
   out_writer=csv.writer(out_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
  
@@ -246,13 +246,13 @@ with open(DETECTION_FILE, "w") as out_file:
     index_max_original=index_max
     freq_peaks[i]=f_zoom[index_max]
     level_peaks[i]=10*np.log10(correl_zoom[index_max])
-    print("CWF peak ",i," frequency = ", freq_peaks[i], " Hz  at level = ",f"{level_peaks[i]:.2f}"," dB at index ",index_max)
+    print("CWF peak ",i," frequency = ", f"{freq_peaks[i]:.2f}", " Hz  at level = ",f"{level_peaks[i]:.2f}"," dB at index ",index_max)
 
 # Now call function to look either side to find true peak, revise, print output, then interpolate for finer resolution 
     index_max=findLocalPeak(index_max,3,correl_zoom)
     freq_peaks[i]=float(f_zoom[index_max])
     level_peaks[i]=10*np.log10(correl_zoom[index_max])
-    print("Revised CWF peak ",i," frequency = ", freq_peaks[i], " Hz  at level = ",f"{level_peaks[i]:.2f}", " dB at index_max ",index_max)
+    print("Revised CWF peak ",i," frequency = ", f"{freq_peaks[i]:.2f}", " Hz  at level = ",f"{level_peaks[i]:.2f}", " dB at index_max ",index_max)
     freq_peaks[i]=freqInterpolate(index_max,2,f_zoom,correl_zoom)
     print("Interpolated CWF peak ",i," frequency = ", f"{freq_peaks[i]:.2f}", " Hz" )
 # Need to remove the peak just found from the array list of peaks
@@ -275,7 +275,7 @@ with open(DETECTION_FILE, "w") as out_file:
   print(f"\nFound {len(result)} pairs:") 
   for i, j, diff in result:
     if freq_peaks[i] > T0-T0_tol:  # ignore frequnecies below theoretical tone zero and allowed margin
-      print(f"  Indices ({i}, {j}): values {freq_peaks[i]} and {freq_peaks[j]}, difference = {diff}") 
+      print(f"  Indices ({i}, {j}): values {freq_peaks[i]:.2f} and {freq_peaks[j]:.2f}, difference = {diff:.2f}") 
       freq_peaks[score]=freq_peaks[i]
       level_peaks[score]=level_peaks[i]
       if score == 2:                      # for the last pair we need to pick up the j index for second index of pair
