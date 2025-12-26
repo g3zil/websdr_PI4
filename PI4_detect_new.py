@@ -255,6 +255,7 @@ with open(DETECTION_FILE, "w") as out_file:
   freq_peaks=remove_close_peaks(freq_peaks, Prox_margin)
   n_peaks=len(freq_peaks)
   print("freq peaks ", freq_peaks)
+  print("level peaks ",level_peaks)
 	
 # Do we have a valid JT4 detection?
 # Look for correct tone_spacing within tolerance either side set by Tn_tol, take indicies for matches
