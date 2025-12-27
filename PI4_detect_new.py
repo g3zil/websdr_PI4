@@ -191,6 +191,8 @@ fsync = np.argmax(acq[tsync,zoom_lo:zoom_hi])
 print("Fsync maximum correlation= ", f_zoom[fsync])
 
 # Plot figures into plot files for reference if interested
+# You can open Linux ImageViewer and open ~/websdr_PI4/output/plots/filename_zoom.png
+# If you leave that window open the plot will update every minute
 # Larger figure size
 fig_size = [10, 6]
 plt.rcParams['figure.figsize'] = fig_size
