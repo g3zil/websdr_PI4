@@ -9,15 +9,15 @@
 ########################################################
 # set up receiver and transmitter details to go into database table via python
 # unlike for jt4 we do not get some of these from WSJT-X ALL.TXT file
-RX_GRID=JO01qj           #  Maidenhead for Margate WebSDR, not where browser is located!
-RX_ID=TRIG01/G3ZIL       # The /G3ZIL is a suggested addition, use your callsign to show who is using WebSDR
-BAND=1.25
+# RX_GRID=JO01qj           #  Maidenhead for Margate WebSDR, not where browser is located!
+# RX_ID=TRIG01/G3ZIL       # The /G3ZIL is a suggested addition, use your callsign to show who is using WebSDR
+# BAND=1.25
 #FREQUENCY=24048930         
 #TX_CALL=PA3GCO/B
 #TX_GRID=JO21EU
-FREQUENCY=240489850        
-TX_CALL=ON0HVL
-TX_GRID=JO10KS
+# FREQUENCY=240489850        
+# TX_CALL=ON0HVL
+# TX_GRID=JO10KS
 # alternate receiver that may hear the PA0GCO/B PI4 beacon
 # RX_GRID=JO21PR
 # RX_ID=SHBRG/G3ZIL          # This is SDR at http://sdr.shbrg.nl:8074/ use your callsign to show who using
@@ -31,7 +31,9 @@ PI4_WAV_DIR=${BASE_DIR}/save  #  This is where wsjtx puts the wav file. Note we 
 
 ########################################################
 # main code
-#######################################################
+########################################################
+# Source the transmitter and receiver metadata from the file ~/websdr_PI4/PI4_config.ini, a user-edited copy of PI4_config_template.ini
+source ${BASE_DIR}/PI4_config.ini
 
 DECODE_CAPTURE_DATE=$(date -u  +%Y-%m-%dT%H:%M:00Z)                   # easier to get time in required format this way
 WAV_FILE=$(ls -ltr ${BASE_DIR}/save| tail -n 1 | awk '{print $9}')    # get the PI4  wav file name to process, every minute
