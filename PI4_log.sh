@@ -1,28 +1,8 @@
 #!/bin/bash
 ### This bash script with python parts detects (sic - no decode, yet)and uploads PI4 data from Margate 24 GHz SDR
 ### to a table in tutorial database on WD1
-### Basic functional prototype based on jt4 original by Gwyn G3ZIL Oct 2024 - August 2025
+### Basic functional prototype based on jt4 original by Gwyn G3ZIL Oct 2024 - December 2025
 ### V1.1 for Ubuntu 24.04 and Raspberry Pi Bookworm
-
-########################################################
-# Only user-set installation variables are in this block
-########################################################
-# set up receiver and transmitter details to go into database table via python
-# unlike for jt4 we do not get some of these from WSJT-X ALL.TXT file
-# RX_GRID=JO01qj           #  Maidenhead for Margate WebSDR, not where browser is located!
-# RX_ID=TRIG01/G3ZIL       # The /G3ZIL is a suggested addition, use your callsign to show who is using WebSDR
-# BAND=1.25
-#FREQUENCY=24048930         
-#TX_CALL=PA3GCO/B
-#TX_GRID=JO21EU
-# FREQUENCY=240489850        
-# TX_CALL=ON0HVL
-# TX_GRID=JO10KS
-# alternate receiver that may hear the PA0GCO/B PI4 beacon
-# RX_GRID=JO21PR
-# RX_ID=SHBRG/G3ZIL          # This is SDR at http://sdr.shbrg.nl:8074/ use your callsign to show who using
-# BAND=3                     # and at 10 GHz
-# FREQUENCY=10368923
 
 ########################################################
 # set up base directory and where wav file from WSJT-X JT4 mode selected will reside
