@@ -26,7 +26,7 @@ try:
         try:
                # connect to the PostgreSQL database
                #print ("Trying to  connect")
-               conn = psycopg2.connect("dbname='tutorial' user='wdupload' host='wd1.wsprdaemon.org' password='Whisper2008'")
+               conn = psycopg2.connect("dbname='tutorial' user='wdupload' host='73.92.50.52' password='Whisper2008'")
                connected="Connected"
                #print ("Appear to have connected")
                # create a new cursor
