@@ -28,7 +28,7 @@ then
     echo "Detection program processing file "${WAV_FILE}
     FILE_NAME=${BASE_DIR}/save/${WAV_FILE}
     FILE_NAME=$(echo ${FILE_NAME%.*})
-    sox ${FILE_NAME.wav} -r 12000 ${BASE_DIR}/${FILE_NAME}_12000.wav   # resample to 12000 sps for PI4
+    sox ${FILE_NAME}.wav -r 12000 ${BASE_DIR}/${FILE_NAME}_12000.wav   # resample to 12000 sps for PI4
     echo "PI4 decode call in here"
     sox ${BASE_DIR}/${FILE_NAME}_12000.wav ${BASE_DIR}/${FILE_NAME}_trimmed.wav trim 0 25       # The PI4 tones are in first 25 seconds
     #FILE_NAME=${BASE_DIR}/${WAV_FILE}
