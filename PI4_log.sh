@@ -28,11 +28,12 @@ then
     echo "Detection program processing file "${WAV_FILE}
     FILE_NAME=$(echo ${WAV_FILE%.*})
     sox ${BASE_DIR}/save/${FILE_NAME}.wav -r 12000 ${BASE_DIR}/${FILE_NAME}_12000.wav   # resample to 12000 sps for PI4
-    echo "PI4 decode call in here"
+    
+    # This line is a PI4 decoder from Paul PE1LXX used with thanks
+    # for details see ./PE1LXX/decoder-options.txt and post at https://groups.io/g/PI-RX/topic/command_line_pi4_decoder/88555819?page=2
+    ./${BASE_DIR}/PE1LXX/pi-rx --freq 800 --capture 100 --width 3 ${BASE_DIR}/${FILE_NAME}_12000.wav
+    
     sox ${BASE_DIR}/${FILE_NAME}_12000.wav ${BASE_DIR}/${FILE_NAME}_trimmed.wav trim 0 25       # The PI4 tones are in first 25 seconds
-    #FILE_NAME=${BASE_DIR}/${WAV_FILE}
-    #FILE_NAME=$(echo ${FILE_NAME%.*})
-    #sox ${BASE_DIR}/trimmed.wav -r 12000 ${FILE_NAME}_12000.wav   # resample to 12000 sps for PI4
     python3 ${BASE_DIR}/PI4_detect_new.py ${DECODE_CAPTURE_DATE} ${BASE_DIR}/${FILE_NAME}_trimmed.wav  > ${BASE_DIR}/PI4_detect.log   # do the processing!
     sed -i 's/\r//g'  ${BASE_DIR}/PI4_detections.csv                         # Remove carriage return at end of line
     
@@ -54,5 +55,5 @@ fi
 
 # Tidy up wav files, keep just last 10 in save directory, but all in main one
  rm -v -f $(ls -1t ${BASE_DIR}/save/*.wav | tail -n +11)
- #rm -f ${BASE_DIR}/*.wav
+ rm -f ${BASE_DIR}/*.wav
 echo "Processing complete"
