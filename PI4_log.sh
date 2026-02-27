@@ -54,5 +54,5 @@ fi
 
 # Tidy up wav files, keep just last 10 in save directory, but all in main one
  rm -v -f $(ls -1t ${BASE_DIR}/save/*.wav | tail -n +11)
- rm -f ${BASE_DIR}/*.wav
+ #rm -f ${BASE_DIR}/*.wav
 echo "Processing complete"
