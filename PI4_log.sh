@@ -31,7 +31,7 @@ then
     
     # This line is a PI4 decoder from Paul PE1LXX used with thanks
     # for details see ./PE1LXX/decoder-options.txt and post at https://groups.io/g/PI-RX/topic/command_line_pi4_decoder/88555819?page=2
-    ./${BASE_DIR}/PE1LXX/pi-rx --freq 800 --capture 100 --width 3 ${BASE_DIR}/${FILE_NAME}_12000.wav
+    .${BASE_DIR}/PE1LXX/pi-rx --freq 800 --capture 100 --width 3 ${BASE_DIR}/${FILE_NAME}_12000.wav
     
     sox ${BASE_DIR}/${FILE_NAME}_12000.wav ${BASE_DIR}/${FILE_NAME}_trimmed.wav trim 0 25       # The PI4 tones are in first 25 seconds
     python3 ${BASE_DIR}/PI4_detect_new.py ${DECODE_CAPTURE_DATE} ${BASE_DIR}/${FILE_NAME}_trimmed.wav  > ${BASE_DIR}/PI4_detect.log   # do the processing!
