@@ -29,10 +29,8 @@ then
     FILE_NAME=$(echo ${WAV_FILE%.*})
     sox ${BASE_DIR}/save/${FILE_NAME}.wav -r 12000 ${BASE_DIR}/${FILE_NAME}_12000.wav   # resample to 12000 sps for PI4
     
-    # This line is a PI4 decoder from Paul PE1LXX used with thanks
-    # for details see ./PE1LXX/decoder-options.txt and post at https://groups.io/g/PI-RX/topic/command_line_pi4_decoder/88555819?page=2
-    echo ${DECODE_CAPTURE_DATE} >> ALL_PE1LXX_decode.txt
-    ${BASE_DIR}/PE1LXX/pi-rx --freq 800 --capture 100 --width 3 ${BASE_DIR}/${FILE_NAME}_12000.wav &>> ALL_PE1LXX_decode.txt
+    # Run script with PI4 decoder from Paul PE1LXX (used with thanks) and send decode data to postgresql database tutorial on wd2 server
+    ./PI4_decode.sh ${WAV_FILE}
     
     sox ${BASE_DIR}/${FILE_NAME}_12000.wav ${BASE_DIR}/${FILE_NAME}_trimmed.wav trim 0 25       # The PI4 tones are in first 25 seconds
     python3 ${BASE_DIR}/PI4_detect_new.py ${DECODE_CAPTURE_DATE} ${BASE_DIR}/${FILE_NAME}_trimmed.wav  > ${BASE_DIR}/PI4_detect.log   # do the processing!
