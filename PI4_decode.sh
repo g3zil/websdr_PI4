@@ -31,6 +31,6 @@ if grep -q "MSG" ./raw_decode.txt; then                      # Valid decode mess
   # insert into data table pi4_spots in database tutorial on WSPRDaemon wd2 server
   PGPASSWORD=Whisper2008 psql -U wdupload -d tutorial -h wd2.wsprdaemon.org -c \
     "INSERT INTO pi4_spots (time, tx_call, rx_call, band, snr, cnr, frequency) \
-     VALUES ('${DECODE_CAPTURE_DATE}','${tx_call}', '${rx_call}', ${band}, ${snr}, ${cnr}, ${frequency});"
+     VALUES ('${DECODE_DATE}','${tx_call}', '${rx_call}', ${band}, ${snr}, ${cnr}, ${frequency});"
 
 fi
