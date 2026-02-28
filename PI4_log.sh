@@ -52,7 +52,12 @@ else
   echo "Stale file - possibly WSJT-X not running"
 fi
 
-# Tidy up wav files, keep just last 10 in save directory, but all in main one
+# Tidy up files, keep just last 10 in save directory, but all in main one
  rm -v -f $(ls -1t ${BASE_DIR}/save/*.wav | tail -n +11)
  rm -f ${BASE_DIR}/*.wav
+ rm -f ${BASE_DIR}/raw_decode.txt
+ rm -f ${BASE_DIR}/temp.csv
+ rm -f ${BASE_DIR}/data.csv
+ rm -f ${BASE_DIR}/noise.csv
+ rm -f ${BASE_DIR}/PI4_detections.csv
 echo "Processing complete"
